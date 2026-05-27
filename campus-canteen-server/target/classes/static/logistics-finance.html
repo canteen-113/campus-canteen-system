@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>财务管理 - 后勤监管端</title>
+<script src="https://modao.cc/agent-py/static/source/js/tailwindcss.js"></script>
+<script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.js"></script>
+</head>
+<body class="bg-slate-50 min-h-screen flex text-slate-800 font-sans">
+<aside class="w-64 bg-slate-900 text-slate-300 flex flex-col shrink-0">
+<div class="p-6 flex items-center gap-3">
+<div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center"><iconify-icon class="text-white text-xl" icon="mdi:shield-check"></iconify-icon></div>
+<span class="text-white font-bold tracking-tight">智慧食堂 · 监管端</span>
+</div>
+<nav class="flex-1 px-4 py-4 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="logistics-index.html">
+<iconify-icon class="text-xl" icon="mdi:view-grid"></iconify-icon>
+<span class="text-sm font-medium">监管工作台</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="logistics-analysis.html">
+<iconify-icon class="text-xl" icon="mdi:chart-box"></iconify-icon>
+<span class="text-sm font-medium">统计分析</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="logistics-data.html">
+<iconify-icon class="text-xl" icon="mdi:database"></iconify-icon>
+<span class="text-sm font-medium">数据中心</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-indigo-600 text-white rounded-xl shadow-lg shadow-indigo-600/20" href="logistics-finance.html">
+<iconify-icon class="text-xl" icon="mdi:finance"></iconify-icon>
+<span class="text-sm font-medium">财务管理</span>
+</a>
+<div class="border-t border-slate-800 my-4 mx-4"></div>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="logistics-system.html">
+<iconify-icon class="text-xl" icon="mdi:cog-outline"></iconify-icon>
+<span class="text-sm font-medium">系统管理</span>
+</a>
+</nav>
+</aside>
+<main class="flex-1 flex flex-col min-w-0 overflow-hidden">
+<header class="h-16 bg-white border-b border-slate-200 px-8 flex items-center justify-between">
+<h2 class="text-lg font-bold">财务对账、营收结算与退款审核</h2>
+<div class="flex gap-3">
+<button class="px-4 py-2 bg-slate-900 text-white rounded-xl text-xs font-bold flex items-center gap-2">
+<iconify-icon icon="mdi:printer-outline"></iconify-icon>打印本周财务报表
+                 </button>
+</div>
+</header>
+<div class="flex-1 overflow-y-auto p-8 space-y-8">
+<!-- 财务概览卡片 -->
+<div class="grid grid-cols-3 gap-6">
+<div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm relative overflow-hidden group">
+<p class="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1 relative z-10">今日累计实收</p>
+<h3 class="text-3xl font-black text-slate-900 relative z-10">¥ 48,520.50</h3>
+<div class="mt-4 flex gap-4 relative z-10">
+<div>
+<p class="text-[10px] text-slate-400">一卡通扣款</p>
+<p class="text-sm font-bold text-slate-700">¥ 32,400</p>
+</div>
+<div class="w-px h-8 bg-slate-100"></div>
+<div>
+<p class="text-[10px] text-slate-400">在线支付</p>
+<p class="text-sm font-bold text-slate-700">¥ 16,120</p>
+</div>
+</div>
+<iconify-icon class="absolute -right-6 -bottom-6 text-[120px] text-slate-50 group-hover:text-indigo-50 transition-colors" icon="mdi:bank"></iconify-icon>
+</div>
+<div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm relative overflow-hidden group">
+<p class="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1 relative z-10">当月累计支出</p>
+<h3 class="text-3xl font-black text-rose-600 relative z-10">¥ 214,000.00</h3>
+<div class="mt-4 flex gap-4 relative z-10">
+<div>
+<p class="text-[10px] text-slate-400">食材采购</p>
+<p class="text-sm font-bold text-slate-700">¥ 185,000</p>
+</div>
+<div class="w-px h-8 bg-slate-100"></div>
+<div>
+<p class="text-[10px] text-slate-400">后勤运维</p>
+<p class="text-sm font-bold text-slate-700">¥ 29,000</p>
+</div>
+</div>
+<iconify-icon class="absolute -right-6 -bottom-6 text-[120px] text-slate-50 group-hover:text-rose-50 transition-colors" icon="mdi:credit-card-minus"></iconify-icon>
+</div>
+<div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm relative overflow-hidden group">
+<p class="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1 relative z-10">待审核退款申请</p>
+<h3 class="text-3xl font-black text-amber-500 relative z-10">¥ 1,280.00</h3>
+<div class="mt-4 flex gap-4 relative z-10">
+<button class="text-xs font-bold text-indigo-600 underline">立即进入审核中心 (12笔)</button>
+</div>
+<iconify-icon class="absolute -right-6 -bottom-6 text-[120px] text-slate-50 group-hover:text-amber-50 transition-colors" icon="mdi:cash-refund"></iconify-icon>
+</div>
+</div>
+<!-- 对账列表 -->
+<div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+<div class="p-6 border-b border-slate-100 flex justify-between items-center">
+<h3 class="font-bold flex items-center gap-2">
+<iconify-icon class="text-indigo-600" icon="mdi:file-table"></iconify-icon>财务结算明细 (按食堂)
+                    </h3>
+<div class="flex gap-2">
+<button class="px-4 py-2 bg-slate-50 border border-slate-100 rounded-xl text-[10px] font-black uppercase tracking-widest text-slate-400">Export CSV</button>
+</div>
+</div>
+<table class="w-full text-left">
+<thead class="bg-slate-50 text-[10px] font-black text-slate-400 uppercase tracking-widest">
+<tr>
+<th class="px-8 py-4">结算主体</th>
+<th class="px-8 py-4">结算周期</th>
+<th class="px-8 py-4">总单数</th>
+<th class="px-8 py-4">总营收金额</th>
+<th class="px-8 py-4">退款扣减</th>
+<th class="px-8 py-4">应结算金额</th>
+<th class="px-8 py-4">状态</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-50 text-sm">
+<tr class="hover:bg-slate-50 transition-all">
+<td class="px-8 py-5">
+<p class="font-bold">第一食堂</p>
+<p class="text-[10px] text-slate-400">收款账户: 6222...0012</p>
+</td>
+<td class="px-8 py-5 text-slate-500 text-xs">2026-04-01 ~ 2026-04-30</td>
+<td class="px-8 py-5 font-medium">12,408</td>
+<td class="px-8 py-5 font-black text-slate-900">¥ 248,500.00</td>
+<td class="px-8 py-5 text-rose-500">¥ -1,250.00</td>
+<td class="px-8 py-5 font-black text-indigo-600">¥ 247,250.00</td>
+<td class="px-8 py-5">
+<span class="bg-emerald-50 text-emerald-600 px-3 py-1 rounded-full text-xs font-bold">已入账</span>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 transition-all">
+<td class="px-8 py-5">
+<p class="font-bold">教工餐厅</p>
+<p class="text-[10px] text-slate-400">收款账户: 6222...0045</p>
+</td>
+<td class="px-8 py-5 text-slate-500 text-xs">2026-04-01 ~ 2026-04-30</td>
+<td class="px-8 py-5 font-medium">4,336</td>
+<td class="px-8 py-5 font-black text-slate-900">¥ 98,200.00</td>
+<td class="px-8 py-5 text-rose-500">¥ -420.00</td>
+<td class="px-8 py-5 font-black text-indigo-600">¥ 97,780.00</td>
+<td class="px-8 py-5">
+<span class="bg-amber-50 text-amber-600 px-3 py-1 rounded-full text-xs font-bold">待结算审核</span>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 transition-all">
+<td class="px-8 py-5">
+<p class="font-bold">全校饮用水铺</p>
+<p class="text-[10px] text-slate-400">收款账户: 6222...0088</p>
+</td>
+<td class="px-8 py-5 text-slate-500 text-xs">2026-04-01 ~ 2026-04-30</td>
+<td class="px-8 py-5 font-medium">32,580</td>
+<td class="px-8 py-5 font-black text-slate-900">¥ 12,580.00</td>
+<td class="px-8 py-5 text-rose-500">¥ -10.00</td>
+<td class="px-8 py-5 font-black text-indigo-600">¥ 12,570.00</td>
+<td class="px-8 py-5">
+<span class="bg-emerald-50 text-emerald-600 px-3 py-1 rounded-full text-xs font-bold">已入账</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- 退款审核 -->
+<div class="grid grid-cols-1 gap-6">
+<h3 class="font-bold px-2">待审核退款明细 (最近)</h3>
+<div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex items-center justify-between">
+<div class="flex items-center gap-6">
+<div class="w-12 h-12 bg-slate-100 rounded-2xl flex items-center justify-center">
+<iconify-icon class="text-2xl text-slate-400" icon="mdi:account-outline"></iconify-icon>
+</div>
+<div>
+<p class="text-sm font-bold italic text-slate-900">“菜品内发现异物，要求退全款。”</p>
+<p class="text-[10px] text-slate-400 mt-1 uppercase tracking-widest">Applicant: 张华 (20261104) · 订单 #202604300042</p>
+</div>
+</div>
+<div class="flex items-center gap-8">
+<div class="text-right">
+<p class="text-[10px] text-slate-400 font-bold">退款金额</p>
+<p class="text-xl font-black text-rose-600">¥ 12.00</p>
+</div>
+<div class="flex gap-2">
+<button class="px-4 py-2 bg-emerald-600 text-white rounded-xl text-xs font-bold">同意</button>
+<button class="px-4 py-2 bg-slate-100 text-slate-600 rounded-xl text-xs font-bold">驳回并联系</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<script src="api-helper.js"></script>
+<script>
+(function(){
+  var user = API.getUser();
+  var canApprove = user && (user.role === 'SUPERVISOR' || user.role === 'SUPER_ADMIN');
+
+  // Add version footer
+  var aside = document.querySelector('aside');
+  if(aside) {
+    var footer = document.createElement('div');
+    footer.className = 'border-t border-slate-800 mt-auto p-3';
+    footer.innerHTML = '<div class="text-xs text-slate-500 text-center">v3.5</div>';
+    aside.appendChild(footer);
+  }
+
+  // Load settlement data
+  API.get('/finance/settlements?page=1&size=50').then(function(res) {
+    if(!res || !res.list) return;
+    var tbody = document.querySelector('table tbody');
+    if(!tbody) return;
+    tbody.innerHTML = '';
+
+    // Update financial summary cards
+    var totalRevenue = 0, totalRefund = 0, totalSettle = 0;
+    for(var i = 0; i < res.list.length; i++) {
+      var s = res.list[i];
+      totalRevenue += s.totalRevenue || 0;
+      totalRefund += s.refundAmount || 0;
+      totalSettle += s.settleAmount || 0;
+    }
+    var cards = document.querySelectorAll('.grid.grid-cols-3.gap-6 > div');
+    if(cards[0]) {
+      var h3r = cards[0].querySelector('h3');
+      if(h3r) h3r.textContent = '¥ ' + totalRevenue.toLocaleString('zh-CN', {minimumFractionDigits: 2});
+    }
+    if(cards[2]) {
+      var h3p = cards[2].querySelector('h3');
+      if(h3p) h3p.textContent = '¥ ' + Math.abs(totalRefund).toLocaleString('zh-CN', {minimumFractionDigits: 2});
+      var btnArea = cards[2].querySelector('.mt-4');
+      if(btnArea && res.list.length) {
+        var pending = res.list.filter(function(s){ return s.status === '待结算审核'; }).length;
+        btnArea.innerHTML = '<button class="text-xs font-bold text-indigo-600 underline">立即进入审核中心 (' + pending + '笔)</button>';
+      }
+    }
+
+    // Render table rows
+    for(var j = 0; j < res.list.length; j++) {
+      var s = res.list[j];
+      var statusClass = s.status === '已入账' ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600';
+      var tr = document.createElement('tr');
+      tr.className = 'hover:bg-slate-50 transition-all';
+      tr.innerHTML =
+        '<td class="px-8 py-5"><p class="font-bold">' + (s.canteenName || '未知') + '</p></td>' +
+        '<td class="px-8 py-5 text-slate-500 text-xs">' + (s.periodStart || '') + ' ~ ' + (s.periodEnd || '') + '</td>' +
+        '<td class="px-8 py-5 font-medium">' + (s.totalOrders || 0).toLocaleString() + '</td>' +
+        '<td class="px-8 py-5 font-black text-slate-900">¥ ' + ((s.totalRevenue || 0)).toLocaleString('zh-CN', {minimumFractionDigits: 2}) + '</td>' +
+        '<td class="px-8 py-5 text-rose-500">¥ -' + ((Math.abs(s.refundAmount) || 0)).toLocaleString('zh-CN', {minimumFractionDigits: 2}) + '</td>' +
+        '<td class="px-8 py-5 font-black text-indigo-600">¥ ' + ((s.settleAmount || 0)).toLocaleString('zh-CN', {minimumFractionDigits: 2}) + '</td>' +
+        '<td class="px-8 py-5"><span class="' + statusClass + ' px-3 py-1 rounded-full text-xs font-bold">' + (s.status || '未知') + '</span></td>';
+      tbody.appendChild(tr);
+    }
+  });
+
+  // Load and render refund list
+  API.get('/finance/refunds?page=1&size=50').then(function(res) {
+    if(!res || !res.list) return;
+    var refundSection = document.querySelector('.grid.grid-cols-1.gap-6');
+    if(!refundSection) return;
+
+    // Remove existing refund items (keep the h3 header)
+    var children = refundSection.children;
+    for(var c = children.length - 1; c >= 0; c--) {
+      if(children[c].tagName !== 'H3') {
+        refundSection.removeChild(children[c]);
+      }
+    }
+
+    for(var i = 0; i < res.list.length; i++) {
+      var r = res.list[i];
+      var div = document.createElement('div');
+      div.className = 'bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex items-center justify-between';
+      div.setAttribute('data-refund-id', r.id);
+
+      var btnHtml = '';
+      if(canApprove && r.status === 'PENDING') {
+        btnHtml =
+          '<button class="px-4 py-2 bg-emerald-600 text-white rounded-xl text-xs font-bold approve-btn">同意</button>' +
+          '<button class="px-4 py-2 bg-slate-100 text-slate-600 rounded-xl text-xs font-bold reject-btn">驳回并联系</button>';
+      } else {
+        var statusText = r.status === 'APPROVED' ? '已同意' : r.status === 'REJECTED' ? '已驳回' : (r.status || '待审核');
+        var statusCls = r.status === 'APPROVED' ? 'text-emerald-600' : r.status === 'REJECTED' ? 'text-rose-600' : 'text-amber-600';
+        btnHtml = '<span class="text-xs font-bold ' + statusCls + '">' + statusText + '</span>';
+      }
+
+      div.innerHTML =
+        '<div class="flex items-center gap-6">' +
+        '<div class="w-12 h-12 bg-slate-100 rounded-2xl flex items-center justify-center"><iconify-icon class="text-2xl text-slate-400" icon="mdi:account-outline"></iconify-icon></div>' +
+        '<div><p class="text-sm font-bold italic text-slate-900">"' + (r.reason || '退款申请') + '"</p>' +
+        '<p class="text-[10px] text-slate-400 mt-1 uppercase tracking-widest">Applicant: ' + (r.applicantName || '未知') + ' · 订单 #' + (r.orderId || '') + '</p></div>' +
+        '</div>' +
+        '<div class="flex items-center gap-8">' +
+        '<div class="text-right"><p class="text-[10px] text-slate-400 font-bold">退款金额</p><p class="text-xl font-black text-rose-600">¥ ' + ((r.amount || 0)).toLocaleString('zh-CN', {minimumFractionDigits: 2}) + '</p></div>' +
+        '<div class="flex gap-2">' + btnHtml + '</div></div>';
+
+      refundSection.appendChild(div);
+    }
+
+    // Bind approve/reject events
+    refundSection.querySelectorAll('.approve-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var parent = btn.closest('[data-refund-id]');
+        if(!parent) return;
+        var rid = parent.getAttribute('data-refund-id');
+        if(!confirm('确认同意该退款申请？')) return;
+        API.put('/finance/refunds/' + rid + '/approve').then(function(r) {
+          alert('退款已同意！');
+          location.reload();
+        }).catch(function() {
+          alert('操作失败，请重试');
+        });
+      });
+    });
+    refundSection.querySelectorAll('.reject-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var parent = btn.closest('[data-refund-id]');
+        if(!parent) return;
+        var rid = parent.getAttribute('data-refund-id');
+        var reason = prompt('请输入驳回原因:');
+        if(!reason) return;
+        API.put('/finance/refunds/' + rid + '/reject', { reason: reason }).then(function(r) {
+          alert('退款已驳回！');
+          location.reload();
+        }).catch(function() {
+          alert('操作失败，请重试');
+        });
+      });
+    });
+  });
+
+  // Print button
+  var printBtn = document.querySelector('header button');
+  if(printBtn) {
+    printBtn.addEventListener('click', function() {
+      alert('财务报表打印功能开发中，敬请期待。');
+    });
+  }
+
+  // Export CSV button
+  var exportBtn = document.querySelector('.rounded-xl.text-\\[10px\\].font-black');
+  if(exportBtn) {
+    exportBtn.addEventListener('click', function() {
+      alert('CSV 导出功能开发中。');
+    });
+  }
+})();
+</script>
+</body>
+</html>

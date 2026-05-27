@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>网页管理端 - 校园智慧食堂</title>
+<script src="https://modao.cc/agent-py/static/source/js/tailwindcss.js"></script>
+<script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.js"></script>
+</head>
+<body class="bg-slate-900 flex items-center justify-center min-h-screen p-6 overflow-hidden relative">
+<!-- 背景装饰 -->
+<div class="absolute top-0 left-0 w-full h-full opacity-20 pointer-events-none">
+<div class="absolute -top-1/4 -left-1/4 w-[600px] h-[600px] bg-blue-600 rounded-full blur-[120px]"></div>
+<div class="absolute -bottom-1/4 -right-1/4 w-[500px] h-[500px] bg-emerald-600 rounded-full blur-[120px]"></div>
+</div>
+<div class="w-full max-w-4xl grid grid-cols-2 bg-white rounded-[32px] overflow-hidden shadow-2xl relative z-10">
+<!-- 左侧展示区 -->
+<div class="bg-slate-900 p-12 flex flex-col justify-between text-white border-r border-slate-800">
+<div>
+<div class="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center mb-8">
+<iconify-icon class="text-3xl" icon="mdi:chef-hat"></iconify-icon>
+</div>
+<h1 class="text-3xl font-bold leading-tight">网页管理端<br/>数字化智能平台</h1>
+<p class="text-slate-400 mt-4 text-sm leading-relaxed">提供全流程食材追踪、财务对账、备餐统计及食品安全监管，助力高效运营。</p>
+</div>
+<div class="space-y-6">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center text-blue-400">
+<iconify-icon class="text-2xl" icon="mdi:shield-check"></iconify-icon>
+</div>
+<div>
+<p class="text-sm font-bold">安全合规</p>
+<p class="text-xs text-slate-500">符合校园食品安全管理规范</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center text-emerald-400">
+<iconify-icon class="text-2xl" icon="mdi:chart-timeline-variant"></iconify-icon>
+</div>
+<div>
+<p class="text-sm font-bold">实时同步</p>
+<p class="text-xs text-slate-500">毫秒级业务处理与对账</p>
+</div>
+</div>
+</div>
+<div class="text-xs text-slate-500">
+                校园智慧食堂管理系统 v3.5.0 | 2026.04
+            </div>
+</div>
+<!-- 右侧登录表单 -->
+<div class="p-16 flex flex-col justify-center">
+<div class="mb-10">
+<h2 class="text-2xl font-black text-slate-900">网页管理端登录</h2>
+<p class="text-slate-500 text-sm mt-2">食堂管理员凭据</p>
+</div>
+<form id="loginForm" class="space-y-6" onsubmit="return false;">
+<div class="space-y-2">
+<label class="text-sm font-bold text-slate-700 ml-1">管理账号</label>
+<div class="relative group">
+<span class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400 group-focus-within:text-blue-600 transition-colors">
+<iconify-icon icon="mdi:account-tie"></iconify-icon>
+</span>
+<input id="username" class="w-full pl-12 pr-4 py-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-blue-600 focus:bg-white outline-none transition-all text-sm font-medium" placeholder="管理员工号" type="text" value="admin_canteen_01"/>
+</div>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-bold text-slate-700 ml-1">访问口令</label>
+<div class="relative group">
+<span class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400 group-focus-within:text-blue-600 transition-colors">
+<iconify-icon icon="mdi:key-variant"></iconify-icon>
+</span>
+<input id="password" class="w-full pl-12 pr-4 py-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-blue-600 focus:bg-white outline-none transition-all text-sm font-medium" placeholder="系统访问密码" type="password" value="123456"/>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<label class="flex items-center gap-2 cursor-pointer">
+<input class="w-4 h-4 rounded text-blue-600 border-slate-300" type="checkbox"/>
+<span class="text-xs text-slate-500">记住当前终端</span>
+</label>
+<a class="text-xs text-blue-600 font-bold" href="#">无法访问？</a>
+</div>
+<button type="button" onclick="doLogin()" class="block w-full bg-slate-900 text-white text-center py-4 rounded-2xl font-bold shadow-xl shadow-slate-200 hover:bg-blue-600 transition-all active:scale-[0.98]">
+                    登录管理系统
+                </button>
+</form>
+<div class="mt-12 text-center">
+<p class="text-xs text-slate-400">切换至：</p>
+<div class="flex justify-center gap-6 mt-4">
+<a class="flex flex-col items-center gap-1 group" href="logistics-login.html">
+<div class="w-10 h-10 rounded-full border border-slate-100 flex items-center justify-center text-slate-400 group-hover:border-indigo-600 group-hover:text-indigo-600 transition-all">
+<iconify-icon icon="mdi:shield-check-outline"></iconify-icon>
+</div>
+<span class="text-[10px] text-slate-400 font-bold">网页监管端</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+<script src="api-helper.js"></script>
+<script>
+async function doLogin() {
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+  if (!username || !password) { alert('请输入账号和密码'); return; }
+  try {
+    const res = await API.post('/auth/login', { username, password });
+    if (res.code === 200) {
+      API.setToken(res.data.token);
+      API.setUser(res.data);
+      window.location.href = 'canteen-index.html';
+    } else {
+      alert(res.message || '登录失败');
+    }
+  } catch (e) { alert('网络错误，请检查后端服务是否启动'); }
+}
+</script>
+</body>
+</html>

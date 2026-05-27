@@ -1,0 +1,50 @@
+<view class="page-comment">
+  <scroll-view class="comment-content" scroll-y>
+    <!-- 待评价商品 -->
+    <view class="dish-info-card">
+      <image class="dish-img" src="{{dishImage}}" mode="aspectFill"/>
+      <view>
+        <text class="dish-name">宫保鸡丁套饭</text>
+        <text class="text-xs text-slate-400 mt-1">就餐于 {{orderDate}}</text>
+        <text class="text-xs text-blue-600">第一食堂 · 3号窗</text>
+      </view>
+    </view>
+
+    <!-- 评分 -->
+    <view class="section-center">
+      <text class="rating-label">整体评价</text>
+      <view class="stars">
+        <text class="star {{index < selectedRating ? 'star-on' : 'star-off'}}" wx:for="{{5}}" wx:key="*this" bindtap="setRating" data-value="{{index + 1}}">★</text>
+      </view>
+      <text class="rating-hint">{{ratingHints[selectedRating - 1]}}</text>
+    </view>
+
+    <!-- 标签 -->
+    <view class="section">
+      <text class="section-label">口味评价</text>
+      <view class="tag-grid">
+        <text class="tag-item {{selectedTags[item] ? 'tag-selected' : ''}}" wx:for="{{tags}}" wx:key="*this" bindtap="toggleTag" data-tag="{{item}}">{{item}}</text>
+      </view>
+    </view>
+
+    <!-- 评价输入 -->
+    <view class="section">
+      <textarea class="comment-input" placeholder="分享您的就餐体验，帮助食堂做得更好..." value="{{commentText}}" bindinput="onCommentInput"/>
+      <view class="image-upload">
+        <view class="upload-box">
+          <text class="upload-icon">📷</text>
+          <text class="upload-hint">上传图片</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 匿名 -->
+    <label class="anon-label">
+      <checkbox checked="{{isAnonymous}}" bindtap="toggleAnonymous"/>
+      <text class="text-xs text-slate-500">匿名评价</text>
+    </label>
+
+    <button class="submit-btn" bindtap="submitFeedback">提交评价</button>
+    <view style="height:40rpx;"></view>
+  </scroll-view>
+</view>

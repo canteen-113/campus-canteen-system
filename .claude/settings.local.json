@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p \"c:/Users/19853/Desktop/xiaoyuan/campus-canteen-server/src/main/resources/static\")",
+      "Bash(cp \"c:/Users/19853/Desktop/xiaoyuan/\"*.html \"c:/Users/19853/Desktop/xiaoyuan/campus-canteen-server/src/main/resources/static/\" && cp \"c:/Users/19853/Desktop/xiaoyuan/api-helper.js\" \"c:/Users/19853/Desktop/xiaoyuan/campus-canteen-server/src/main/resources/static/\")",
+      "Bash(curl -s -X POST http://localhost:8080/api/orders -H \"Content-Type: application/json\" -d '{\"userId\":1,\"canteenId\":1,\"windowId\":3,\"items\":[{\"dishId\":1,\"dishName\":\"秘制红烧牛腩\",\"price\":12.00,\"quantity\":1}],\"mealPeriod\":\"LUNCH\",\"reserveDate\":\"2026-05-16\",\"deposit\":2.00,\"discount\":0}')",
+      "Bash(curl -s -X POST http://localhost:8080/api/orders -H \"Content-Type: application/json;charset=UTF-8\" --data-raw '{\"userId\":1,\"canteenId\":1,\"windowId\":3,\"items\":[{\"dishId\":1,\"dishName\":\"Beef\",\"price\":12.00,\"quantity\":1}],\"mealPeriod\":\"LUNCH\",\"reserveDate\":\"2026-05-16\",\"deposit\":2.00,\"discount\":0}')",
+      "Bash(curl -s http://localhost:8080/api/users/1)",
+      "Bash(curl -s \"http://localhost:8080/api/orders?userId=1&size=2\")",
+      "Bash(curl -s -X POST http://localhost:8080/api/orders -H \"Content-Type: application/json\" -d '{\"userId\":1,\"items\":[{\"dishId\":1,\"dishName\":\"test\",\"price\":12.00,\"quantity\":1}],\"mealPeriod\":\"LUNCH\",\"reserveDate\":\"2026-05-16\"}')",
+      "Bash(curl -s http://localhost:8080/api/stock?page=1\\\\&size=2)",
+      "Bash(curl -s http://localhost:8080/api/purchases?page=1\\\\&size=2)",
+      "Bash(curl -s http://localhost:8080/api/employees?page=1\\\\&size=2)"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\19853\\Desktop\\xiaoyuan\\campus-canteen-server\\src\\main\\resources",
+      "c:\\Users\\19853\\Desktop\\xiaoyuan"
+    ]
+  }
+}

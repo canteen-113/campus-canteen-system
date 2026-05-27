@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>食材库存 - 食堂管理端</title>
+<script src="https://modao.cc/agent-py/static/source/js/tailwindcss.js"></script>
+<script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.js"></script>
+<style>
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:999;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(2px)}
+.modal-overlay.hidden{display:none}
+.modal-box{background:#fff;border-radius:24px;width:520px;max-height:85vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.25);padding:28px}
+.modal-box h3{font-size:20px;font-weight:700;color:#1e293b;margin-bottom:20px}
+.modal-box label{display:block;font-size:12px;font-weight:700;color:#64748b;margin-bottom:6px;text-transform:uppercase}
+.modal-box input,.modal-box select,.modal-box textarea{width:100%;padding:10px 14px;border:2px solid #e2e8f0;border-radius:12px;font-size:14px;outline:none;margin-bottom:14px;box-sizing:border-box}
+.modal-box input:focus,.modal-box select:focus{border-color:#2563eb}
+.btn-row{display:flex;justify-content:flex-end;gap:12px;margin-top:8px}
+.btn-cancel{background:#f1f5f9;color:#475569;border:none;padding:10px 24px;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer}
+.btn-save{background:#2563eb;color:#fff;border:none;padding:10px 24px;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 12px rgba(37,99,235,.2)}
+.frow{display:flex;gap:10px}.frow>*{flex:1}
+</style>
+</head>
+<body class="bg-slate-100 min-h-screen flex text-slate-800">
+<aside class="w-64 bg-slate-900 text-slate-300 flex flex-col shrink-0">
+<div class="p-6 flex items-center gap-3">
+<div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center"><iconify-icon class="text-white text-xl" icon="mdi:silverware-fork-knife"></iconify-icon></div>
+<span class="text-white font-bold tracking-tight" id="sidebarTitle">智慧食堂 · 管理端</span>
+</div>
+<nav class="flex-1 px-4 py-4 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="canteen-index.html"><iconify-icon class="text-xl" icon="mdi:view-dashboard"></iconify-icon><span class="text-sm font-medium">首页概览</span></a>
+<div class="text-xs font-semibold text-slate-500 uppercase px-4 py-3 mt-4">业务管理</div>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="canteen-dishes.html"><iconify-icon class="text-xl" icon="mdi:food-variant"></iconify-icon><span class="text-sm font-medium">菜品管理</span></a>
+<a class="flex items-center gap-3 px-4 py-3 bg-blue-600 text-white rounded-xl transition-all" href="canteen-stock.html"><iconify-icon class="text-xl" icon="mdi:box-variant"></iconify-icon><span class="text-sm font-medium">食材库存</span></a>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="canteen-verify.html"><iconify-icon class="text-xl" icon="mdi:barcode-scan"></iconify-icon><span class="text-sm font-medium">取餐核销</span></a>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="canteen-feedback.html"><iconify-icon class="text-xl" icon="mdi:comment-quote"></iconify-icon><span class="text-sm font-medium">评价管理</span></a>
+<div class="text-xs font-semibold text-slate-500 uppercase px-4 py-3 mt-4">运营支撑</div>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="canteen-purchase.html"><iconify-icon class="text-xl" icon="mdi:cart-arrow-down"></iconify-icon><span class="text-sm font-medium">采购审批</span></a>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="canteen-safety.html"><iconify-icon class="text-xl" icon="mdi:shield-check"></iconify-icon><span class="text-sm font-medium">食品安全</span></a>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="canteen-staff-live"><iconify-icon class="text-xl" icon="mdi:account-group"></iconify-icon><span class="text-sm font-medium">员工管理</span></a>
+</nav>
+<div class="p-4 border-t border-slate-800 text-xs text-slate-500 text-center">v3.5.0</div>
+</aside>
+<main class="flex-1 flex flex-col min-w-0">
+<header class="h-16 bg-white border-b border-slate-200 px-8 flex items-center justify-between">
+<h2 class="text-lg font-bold">食材库存及出入库</h2>
+<div class="flex gap-3" id="actionBtns">
+<button class="px-4 py-2 border border-slate-200 rounded-xl text-sm font-bold flex items-center gap-2 hover:bg-slate-50" onclick="openInbound()"><iconify-icon icon="mdi:file-upload-outline"></iconify-icon>入库登记</button>
+<button class="px-4 py-2 border border-slate-200 rounded-xl text-sm font-bold flex items-center gap-2 hover:bg-slate-50 text-red-600" onclick="openLoss()"><iconify-icon icon="mdi:file-download-outline"></iconify-icon>损耗登记</button>
+<a class="px-4 py-2 bg-blue-600 text-white rounded-xl text-sm font-bold flex items-center gap-2 shadow-lg shadow-blue-100" href="canteen-purchase.html"><iconify-icon icon="mdi:plus"></iconify-icon>采购申请</a>
+</div>
+</header>
+<div class="flex-1 overflow-y-auto p-8 space-y-6">
+<div class="grid grid-cols-4 gap-6">
+<div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm"><div class="flex items-center gap-3 text-slate-400 mb-2"><iconify-icon class="text-xl" icon="mdi:warehouse"></iconify-icon><span class="text-xs font-bold">库存物料</span></div><h3 class="text-2xl font-black" id="statCount">--</h3></div>
+<div class="bg-white p-6 rounded-3xl border border-red-100 shadow-sm ring-4 ring-red-50"><div class="flex items-center gap-3 text-red-400 mb-2"><iconify-icon class="text-xl" icon="mdi:alert-outline"></iconify-icon><span class="text-xs font-bold">预警物料</span></div><h3 class="text-2xl font-black text-red-600" id="statAlert">--</h3></div>
+<div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm"><div class="flex items-center gap-3 text-slate-400 mb-2"><iconify-icon class="text-xl" icon="mdi:timer-sand"></iconify-icon><span class="text-xs font-bold">临期物料</span></div><h3 class="text-2xl font-black" id="statExpire">--</h3></div>
+<div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm"><div class="flex items-center gap-3 text-slate-400 mb-2"><iconify-icon class="text-xl" icon="mdi:trending-down"></iconify-icon><span class="text-xs font-bold">总物料数</span></div><h3 class="text-2xl font-black" id="statTotal">--</h3></div>
+</div>
+<div class="bg-white rounded-3xl border border-slate-200 shadow-sm">
+<div class="p-6 border-b border-slate-100 flex justify-between items-center">
+<h3 class="font-bold">实时库存台账</h3>
+<input id="searchInput" class="pl-4 py-2 bg-slate-100 rounded-xl text-xs outline-none w-64" placeholder="搜索物料..." oninput="loadStock()">
+</div>
+<table class="w-full text-left"><thead class="bg-slate-50 border-b border-slate-100">
+<tr><th class="px-6 py-4 text-xs font-bold text-slate-400">物料名称</th><th class="px-6 py-4 text-xs font-bold text-slate-400">规格/单位</th><th class="px-6 py-4 text-xs font-bold text-slate-400">分类</th><th class="px-6 py-4 text-xs font-bold text-slate-400 text-right">现有库存</th><th class="px-6 py-4 text-xs font-bold text-slate-400 text-right">预警线</th><th class="px-6 py-4 text-xs font-bold text-slate-400 text-right">均价</th><th class="px-6 py-4 text-xs font-bold text-slate-400">保质期</th><th class="px-6 py-4 text-xs font-bold text-slate-400">状态</th></tr>
+</thead><tbody class="divide-y divide-slate-50 text-sm" id="stockBody"><tr><td colspan="8" class="px-6 py-8 text-center text-slate-400">加载中...</td></tr></tbody></table>
+</div>
+</div>
+</main>
+
+<!-- 入库 Modal -->
+<div class="modal-overlay hidden" id="inboundModal"><div class="modal-box"><h3>入库登记</h3>
+<label>选择物料</label><select id="inIngredient"><option value="">-- 请选择 --</option></select>
+<button onclick="toggleNew('in')" style="background:none;border:none;color:#2563eb;font-size:12px;cursor:pointer;padding:4px 0;margin-bottom:8px;">+ 添加新物料</button>
+<div id="inNew" style="display:none;background:#f8fafc;border-radius:12px;padding:12px;margin-bottom:12px;">
+<div class="frow"><div><label>名称</label><input id="inNewName" placeholder="物料名称"></div><div><label>规格</label><input id="inNewSpec" placeholder="如: kg"></div></div>
+<div class="frow"><div><label>单位</label><input id="inNewUnit" placeholder="如: 公斤"></div><div><label>分类</label><input id="inNewCat" placeholder="如: 肉禽类"></div></div>
+<button onclick="doNewIngredient('in')" style="background:#2563eb;color:#fff;border:none;padding:6px 16px;border-radius:8px;font-size:12px;cursor:pointer;">确认添加</button>
+</div>
+<label>入库数量</label><input id="inQty" type="number" step="0.1" placeholder="入库数量">
+<label>入库单价</label><input id="inPrice" type="number" step="0.01" placeholder="入库单价">
+<label>日期</label><input id="inDate" type="date">
+<label>操作人</label><input id="inOperator" placeholder="操作人姓名">
+<label>备注</label><input id="inRemark" placeholder="备注">
+<div class="btn-row"><button class="btn-cancel" onclick="closeModal('inboundModal')">取消</button><button class="btn-save" onclick="doInbound()">确认入库</button></div>
+</div></div>
+
+<!-- 损耗 Modal -->
+<div class="modal-overlay hidden" id="lossModal"><div class="modal-box"><h3>损耗登记</h3>
+<label>选择物料</label><select id="lossIngredient"><option value="">-- 请选择 --</option></select>
+<button onclick="toggleNew('loss')" style="background:none;border:none;color:#2563eb;font-size:12px;cursor:pointer;padding:4px 0;margin-bottom:8px;">+ 添加新物料</button>
+<div id="lossNew" style="display:none;background:#f8fafc;border-radius:12px;padding:12px;margin-bottom:12px;">
+<div class="frow"><div><label>名称</label><input id="lossNewName" placeholder="物料名称"></div><div><label>规格</label><input id="lossNewSpec" placeholder="如: kg"></div></div>
+<div class="frow"><div><label>单位</label><input id="lossNewUnit" placeholder="如: 公斤"></div><div><label>分类</label><input id="lossNewCat" placeholder="如: 肉禽类"></div></div>
+<button onclick="doNewIngredient('loss')" style="background:#2563eb;color:#fff;border:none;padding:6px 16px;border-radius:8px;font-size:12px;cursor:pointer;">确认添加</button>
+</div>
+<label>损耗数量</label><input id="lossQty" type="number" step="0.1" placeholder="损耗数量">
+<label>日期</label><input id="lossDate" type="date">
+<label>操作人</label><input id="lossOperator" placeholder="操作人姓名">
+<label>备注</label><input id="lossRemark" placeholder="备注">
+<div class="btn-row"><button class="btn-cancel" onclick="closeModal('lossModal')">取消</button><button class="btn-save" onclick="doLoss()">确认损耗</button></div>
+</div></div>
+
+<script src="api-helper.js"></script>
+<script>
+(function(){
+var user=API.getUser();
+var role=user?user.role:'';
+var sidetitle=document.getElementById('sidebarTitle');
+var actions=document.getElementById('actionBtns');
+if(role==='SUPERVISOR'){
+  if(sidetitle)sidetitle.textContent='后勤处 · 监管端';
+  if(actions)actions.innerHTML='<span class="text-sm text-slate-400">监管查看模式 — 可查看全校库存，无操作权限</span>';
+}else if(role==='CANTEEN_MANAGER'){
+  if(sidetitle)sidetitle.textContent='第一食堂 · 管理端';
+}else if(role==='SUPER_ADMIN'){
+  if(sidetitle)sidetitle.textContent='超级管理 · 系统端';
+}
+
+// ===== 加载库存列表（用原生fetch，加上详细调试） =====
+window.loadStock=function(){
+  var kw=document.getElementById('searchInput').value.trim();
+  var url='http://localhost:8080/api/stock/all';
+  var tb=document.getElementById('stockBody');
+  fetch(url)
+  .then(function(res){return res.json();})
+  .then(function(r){
+    if(!tb)return;
+    if(!r||r.code!==200||!r.data){tb.innerHTML='<tr><td colspan="8" class="px-6 py-8 text-center text-slate-400">数据加载失败</td></tr>';return;}
+    var list=r.data;
+    if(Object.prototype.toString.call(list)!=='[object Array]'){list=[];}
+    if(!list.length){tb.innerHTML='<tr><td colspan="8" class="px-6 py-8 text-center text-slate-400">暂无物料数据 (数据库共'+(!list?0:list.length)+'条)</td></tr>';return;}
+    if(!list||!list.length){tb.innerHTML='<tr><td colspan="8" class="px-6 py-8 text-center text-slate-400">暂无物料数据 (共0条)</td></tr>';return;}
+    var html='',total=0,alerts=0,expires=0;
+    for(var i=0;i<list.length;i++){
+      var it=list[i];total++;
+      var cs=parseFloat(it.currentStock)||0, at=parseFloat(it.alertThreshold)||0;
+      var st=it.status||'',sc='bg-emerald-50 text-emerald-600',stxt='充足';
+      if(st==='LOW'||cs<at){sc='bg-red-50 text-red-600';stxt='库存不足';alerts++;}
+      else if(st==='EXPIRING'){sc='bg-orange-50 text-orange-600';stxt='临期';expires++;}
+      else if(st==='OUT'){sc='bg-slate-100 text-slate-500';stxt='缺货';}
+      html+='<tr class="hover:bg-slate-50"><td class="px-6 py-4 font-bold">'+it.name+'</td><td class="px-6 py-4">'+(it.spec||'')+' ('+(it.unit||'')+')</td><td class="px-6 py-4"><span class="bg-slate-100 px-2 py-1 rounded text-xs">'+(it.category||'')+'</span></td><td class="px-6 py-4 text-right font-black '+(cs<at?'text-rose-600':'')+'">'+cs+'</td><td class="px-6 py-4 text-right text-slate-400">'+at+'</td><td class="px-6 py-4 text-right">'+(it.avgPrice||0)+'</td><td class="px-6 py-4 text-center">'+(it.expiryDate||'')+'</td><td class="px-6 py-4"><span class="'+sc+' px-2 py-1 rounded-lg text-xs font-bold">'+stxt+'</span></td></tr>';
+    }
+    tb.innerHTML=html;
+    var el=document.getElementById('statCount');if(el)el.textContent=total;
+    el=document.getElementById('statAlert');if(el)el.textContent=alerts+' 项';
+    el=document.getElementById('statExpire');if(el)el.textContent=expires+' 项';
+    el=document.getElementById('statTotal');if(el)el.textContent=total+' 种';
+  }).catch(function(e){
+    console.error('Stock API error:',e);
+    if(tb)tb.innerHTML='<tr><td colspan="8" class="px-6 py-8 text-center text-slate-400">网络错误: '+e.message+'</td></tr>';
+  });
+};
+
+// ===== 加载物料下拉框（原生fetch） =====
+window.loadIngredients=function(selId){
+  var sel=document.getElementById(selId);
+  if(!sel)return;
+  fetch('http://localhost:8080/api/stock/all')
+  .then(function(res){return res.json();})
+  .then(function(r){
+    sel.innerHTML='<option value="">-- 请选择物料 --</option>';
+    if(!r||r.code!==200||!r.data)return;
+    var list=r.data;
+    if(Object.prototype.toString.call(list)!=='[object Array]')return;
+    for(var i=0;i<list.length;i++){
+      sel.innerHTML+='<option value="'+list[i].id+'">'+list[i].name+' ('+(list[i].spec||'')+')</option>';
+    }
+  }).catch(function(){});
+};
+
+// ===== 模态框 =====
+window.openInbound=function(){document.getElementById('inboundModal').classList.remove('hidden');loadIngredients('inIngredient');};
+window.openLoss=function(){document.getElementById('lossModal').classList.remove('hidden');loadIngredients('lossIngredient');};
+window.closeModal=function(id){document.getElementById(id).classList.add('hidden');};
+window.toggleNew=function(p){var d=document.getElementById(p+'New');d.style.display=d.style.display==='none'?'block':'none';};
+
+// ===== 新建物料 =====
+window.doNewIngredient=function(p){
+  var name=document.getElementById(p+'NewName').value.trim();
+  if(!name){alert('请输入物料名称');return;}
+  var data={name:name,spec:document.getElementById(p+'NewSpec').value,unit:document.getElementById(p+'NewUnit').value,category:document.getElementById(p+'NewCat').value,currentStock:0,alertThreshold:0};
+  API.post('/stock/ingredient',data).then(function(r){
+    if(r&&r.code===200){alert('物料已添加');document.getElementById(p+'New').style.display='none';loadIngredients(p+'Ingredient');}
+    else alert((r&&r.message)||'添加失败');
+  }).catch(function(){alert('添加失败');});
+};
+
+// ===== 入库 =====
+window.doInbound=function(){
+  var id=document.getElementById('inIngredient').value;
+  var qty=document.getElementById('inQty').value;
+  if(!id||!qty){alert('请选择物料并填写数量');return;}
+  var price=document.getElementById('inPrice').value||'0';
+  var dt=document.getElementById('inDate').value;
+  var op=document.getElementById('inOperator').value||'管理员';
+  var rm=document.getElementById('inRemark').value||'';
+  var url='/stock/inbound?ingredientId='+id+'&quantity='+qty+'&price='+price+'&operator='+encodeURIComponent(op)+'&remark='+encodeURIComponent(rm);
+  if(dt)url+='&recordDate='+encodeURIComponent(dt);
+  API.post(url).then(function(r){
+    if(r&&r.code===200){alert('入库成功');closeModal('inboundModal');loadStock();}
+    else alert((r&&r.message)||'入库失败');
+  }).catch(function(){alert('入库失败');});
+};
+
+// ===== 损耗 =====
+window.doLoss=function(){
+  var id=document.getElementById('lossIngredient').value;
+  var qty=document.getElementById('lossQty').value;
+  if(!id||!qty){alert('请选择物料并填写数量');return;}
+  var dt=document.getElementById('lossDate').value;
+  var op=document.getElementById('lossOperator').value||'管理员';
+  var rm=document.getElementById('lossRemark').value||'';
+  var url='/stock/loss?ingredientId='+id+'&quantity='+qty+'&operator='+encodeURIComponent(op)+'&remark='+encodeURIComponent(rm);
+  if(dt)url+='&recordDate='+encodeURIComponent(dt);
+  API.post(url).then(function(r){
+    if(r&&r.code===200){alert('损耗登记成功');closeModal('lossModal');loadStock();}
+    else alert((r&&r.message)||'损耗登记失败');
+  }).catch(function(){alert('损耗登记失败');});
+};
+
+document.addEventListener('DOMContentLoaded',function(){
+  loadStock();
+});
+})();
+</script>
+</body>
+</html>

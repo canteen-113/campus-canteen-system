@@ -1,0 +1,123 @@
+.page-comment {
+  height: 100vh;
+  background: #ffffff;
+}
+
+.comment-content { padding: 32rpx; }
+
+.dish-info-card {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+  padding: 32rpx;
+  background: #f8fafc;
+  border-radius: 24rpx;
+  margin-bottom: 48rpx;
+}
+
+.dish-img {
+  width: 112rpx;
+  height: 112rpx;
+  border-radius: 20rpx;
+}
+
+.dish-name { font-size: 28rpx; font-weight: 700; }
+
+.section-center {
+  text-align: center;
+  margin-bottom: 48rpx;
+}
+
+.rating-label { font-size: 28rpx; font-weight: 600; color: #334155; }
+
+.stars {
+  display: flex;
+  justify-content: center;
+  gap: 8rpx;
+  margin: 24rpx 0 12rpx;
+}
+
+.star { font-size: 72rpx; }
+.star-on { color: #f59e0b; }
+.star-off { color: #e2e8f0; }
+
+.rating-hint { font-size: 24rpx; color: #f59e0b; font-weight: 700; }
+
+.section { margin-bottom: 40rpx; }
+
+.section-label {
+  font-size: 24rpx;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 2rpx;
+  display: block;
+  margin-bottom: 20rpx;
+}
+
+.tag-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+.tag-item {
+  padding: 16rpx 24rpx;
+  background: #f8fafc;
+  color: #94a3b8;
+  border-radius: 32rpx;
+  font-size: 24rpx;
+  border: 2rpx solid #e2e8f0;
+}
+
+.tag-selected {
+  background: #eff6ff;
+  color: #2563eb;
+  border-color: #bfdbfe;
+}
+
+.comment-input {
+  width: 100%;
+  min-height: 200rpx;
+  background: #f8fafc;
+  border: 2rpx solid #e2e8f0;
+  border-radius: 24rpx;
+  padding: 24rpx;
+  font-size: 28rpx;
+  box-sizing: border-box;
+}
+
+.image-upload { margin-top: 24rpx; }
+
+.upload-box {
+  width: 144rpx;
+  height: 144rpx;
+  border: 4rpx dashed #e2e8f0;
+  border-radius: 24rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #cbd5e1;
+}
+
+.upload-icon { font-size: 48rpx; }
+.upload-hint { font-size: 18rpx; margin-top: 8rpx; }
+
+.anon-label {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  margin-bottom: 48rpx;
+}
+
+.submit-btn {
+  width: 100%;
+  background: #2563eb;
+  color: #ffffff;
+  padding: 32rpx;
+  border-radius: 24rpx;
+  font-size: 28rpx;
+  font-weight: 700;
+  box-shadow: 0 8rpx 24rpx rgba(37, 99, 235, 0.2);
+}

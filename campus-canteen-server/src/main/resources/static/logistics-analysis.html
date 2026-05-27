@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>统计分析 - 后勤监管端</title>
+<script src="https://modao.cc/agent-py/static/source/js/tailwindcss.js"></script>
+<script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.js"></script>
+<script src="https://modao.cc/agent-py/static/source/js/echarts.min.js"></script>
+</head>
+<body class="bg-slate-50 min-h-screen flex">
+<!-- 侧边栏 (监管版) -->
+<aside class="w-64 bg-slate-900 text-slate-300 flex flex-col shrink-0">
+<div class="p-6 flex items-center gap-3">
+<div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center shadow-lg shadow-indigo-500/20">
+<iconify-icon class="text-white text-xl" icon="mdi:shield-check"></iconify-icon>
+</div>
+<span class="text-white font-bold tracking-tight">智慧食堂 · 监管端</span>
+</div>
+<nav class="flex-1 px-4 py-4 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="logistics-index.html">
+<iconify-icon class="text-xl" icon="mdi:view-grid"></iconify-icon>
+<span class="text-sm font-medium">监管工作台</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-indigo-600 text-white rounded-xl shadow-lg shadow-indigo-600/20" href="logistics-analysis.html">
+<iconify-icon class="text-xl" icon="mdi:chart-box"></iconify-icon>
+<span class="text-sm font-medium">统计分析</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="logistics-data.html">
+<iconify-icon class="text-xl" icon="mdi:database"></iconify-icon>
+<span class="text-sm font-medium">数据中心</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="logistics-finance.html">
+<iconify-icon class="text-xl" icon="mdi:finance"></iconify-icon>
+<span class="text-sm font-medium">财务管理</span>
+</a>
+<div class="border-t border-slate-800 my-4 mx-4"></div>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="logistics-system.html">
+<iconify-icon class="text-xl" icon="mdi:cog-outline"></iconify-icon>
+<span class="text-sm font-medium">系统管理</span>
+</a>
+</nav>
+<div class="p-4 border-t border-slate-800">
+<div class="bg-slate-800 rounded-xl p-3 flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-indigo-400">
+<iconify-icon class="text-xl" icon="mdi:shield-account"></iconify-icon>
+</div>
+<div class="flex-1 overflow-hidden">
+<p class="text-xs text-white font-medium">后勤处领导</p>
+<p class="text-[10px] text-slate-500 uppercase tracking-widest">Supervisor</p>
+</div>
+<span style="cursor:pointer" title="退出"><iconify-icon class="text-slate-500 hover:text-white" icon="mdi:logout" onclick="sessionStorage.clear();location.href='logistics-login.html'"></iconify-icon></span>
+</div>
+</div>
+</aside>
+<main class="flex-1 flex flex-col min-w-0">
+<header class="h-16 bg-white border-b border-slate-200 px-8 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="text-slate-400 text-sm">后勤监管</span>
+<iconify-icon class="text-slate-400" icon="mdi:chevron-right"></iconify-icon>
+<span class="text-slate-800 font-bold">统计分析</span>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm text-slate-600 hover:bg-slate-50">
+<iconify-icon icon="mdi:file-download-outline"></iconify-icon>导出报表
+                </button>
+<button class="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-bold shadow-lg shadow-indigo-200">刷新数据</button>
+</div>
+</header>
+<div class="flex-1 overflow-y-auto p-8 space-y-8">
+<!-- 筛选 -->
+<div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-6">
+<div class="flex items-center gap-2">
+<span class="text-sm text-slate-500">统计周期:</span>
+<select class="text-sm border-slate-200 rounded-lg px-2 py-1 outline-none">
+<option>本月 (2026-04)</option>
+<option>上月</option>
+<option>本年度</option>
+</select>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-sm text-slate-500">食堂范围:</span>
+<select class="text-sm border-slate-200 rounded-lg px-2 py-1 outline-none">
+<option>全部食堂</option>
+<option>第一食堂</option>
+<option>第二食堂</option>
+<option>教工餐厅</option>
+</select>
+</div>
+</div>
+<!-- 数据概览 -->
+<div class="grid grid-cols-4 gap-6">
+<div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+<p class="text-slate-500 text-sm mb-1">月度消费总额</p>
+<h3 class="text-2xl font-black text-slate-900">¥ 842,500.00</h3>
+<div class="mt-4 flex items-center gap-2 text-xs text-green-600 bg-green-50 w-fit px-2 py-1 rounded">
+<iconify-icon icon="mdi:arrow-up-thin"></iconify-icon>
+<span>环比增长 8.4%</span>
+</div>
+</div>
+<div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+<p class="text-slate-500 text-sm mb-1">累计就餐人次</p>
+<h3 class="text-2xl font-black text-slate-900">54,208 次</h3>
+<div class="mt-4 flex items-center gap-2 text-xs text-green-600 bg-green-50 w-fit px-2 py-1 rounded">
+<iconify-icon icon="mdi:arrow-up-thin"></iconify-icon>
+<span>环比增长 3.2%</span>
+</div>
+</div>
+<div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+<p class="text-slate-500 text-sm mb-1">食材平均损耗率</p>
+<h3 class="text-2xl font-black text-slate-900">2.14%</h3>
+<div class="mt-4 flex items-center gap-2 text-xs text-rose-600 bg-rose-50 w-fit px-2 py-1 rounded">
+<iconify-icon icon="mdi:arrow-down-thin"></iconify-icon>
+<span>环比下降 0.5%</span>
+</div>
+</div>
+<div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+<p class="text-slate-500 text-sm mb-1">平均就餐评分</p>
+<h3 class="text-2xl font-black text-slate-900">4.82 / 5.0</h3>
+<div class="mt-4 flex items-center gap-2 text-xs text-blue-600 bg-blue-50 w-fit px-2 py-1 rounded">
+<span>基于 12,408 条评价</span>
+</div>
+</div>
+</div>
+<!-- 图表组 -->
+<div class="grid grid-cols-2 gap-8">
+<div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm">
+<h3 class="font-bold text-slate-800 mb-8">就餐时段分布图 (Heatmap)</h3>
+<div class="h-80 w-full" id="chart-heatmap"></div>
+</div>
+<div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm">
+<h3 class="font-bold text-slate-800 mb-8">食材损耗构成分析</h3>
+<div class="h-80 w-full" id="chart-loss"></div>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-8">
+<div class="col-span-2 bg-white p-8 rounded-3xl border border-slate-200 shadow-sm">
+<h3 class="font-bold text-slate-800 mb-8">各食堂营收对比</h3>
+<div class="h-80 w-full" id="chart-canteen-compare"></div>
+</div>
+<div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm">
+<h3 class="font-bold text-slate-800 mb-8">就餐人员画像</h3>
+<div class="space-y-6">
+<div>
+<div class="flex justify-between text-xs text-slate-500 mb-1">
+<span>本科生 (75%)</span>
+<span>40,656人</span>
+</div>
+<div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+<div class="bg-indigo-600 h-full w-[75%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-xs text-slate-500 mb-1">
+<span>研究生 (15%)</span>
+<span>8,131人</span>
+</div>
+<div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+<div class="bg-blue-400 h-full w-[15%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-xs text-slate-500 mb-1">
+<span>教职工 (8%)</span>
+<span>4,336人</span>
+</div>
+<div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+<div class="bg-emerald-400 h-full w-[8%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-xs text-slate-500 mb-1">
+<span>外部及其他 (2%)</span>
+<span>1,084人</span>
+</div>
+<div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+<div class="bg-amber-400 h-full w-[2%]"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<script src="api-helper.js"></script>
+<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 热力图模拟
+            var heatmapChart = echarts.init(document.getElementById('chart-heatmap'));
+            heatmapChart.setOption({
+                animation: false,
+                tooltip: { position: 'top' },
+                grid: { top: '10%', bottom: '10%', left: '10%', right: '5%' },
+                xAxis: { type: 'category', data: ['07:00', '08:00', '11:00', '12:00', '13:00', '17:00', '18:00', '19:00'] },
+                yAxis: { type: 'category', data: ['周一', '周二', '周三', '周四', '周五'] },
+                visualMap: { min: 0, max: 10, calculable: true, orient: 'horizontal', left: 'center', bottom: '0', inRange: { color: ['#e0f2fe', '#6366f1'] } },
+                series: [{
+                    name: '热力值',
+                    type: 'heatmap',
+                    data: [[0,0,5],[1,0,3],[2,0,8],[3,0,10],[4,0,7],[0,1,6],[1,1,4],[2,1,9],[3,1,10],[4,1,8]], // 简化模拟数据
+                    label: { show: false }
+                }]
+            });
+
+            // 损耗饼图
+            var lossChart = echarts.init(document.getElementById('chart-loss'));
+            lossChart.setOption({
+                animation: false,
+                tooltip: { trigger: 'item' },
+                legend: { bottom: '0', left: 'center' },
+                series: [{
+                    name: '损耗构成',
+                    type: 'pie',
+                    radius: ['40%', '70%'],
+                    avoidLabelOverlap: false,
+                    itemStyle: { borderRadius: 10, borderColor: '#fff', borderWidth: 2 },
+                    label: { show: false },
+                    data: [
+                        { value: 1048, name: '库存过期', itemStyle: {color: '#6366f1'} },
+                        { value: 735, name: '加工损耗', itemStyle: {color: '#818cf8'} },
+                        { value: 580, name: '备餐剩余', itemStyle: {color: '#a5b4fc'} },
+                        { value: 484, name: '运输损坏', itemStyle: {color: '#c7d2fe'} }
+                    ]
+                }]
+            });
+
+            // 食堂对比柱状图
+            var canteenChart = echarts.init(document.getElementById('chart-canteen-compare'));
+            canteenChart.setOption({
+                animation: false,
+                grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+                xAxis: { type: 'value', axisLine: {show: false} },
+                yAxis: { type: 'category', data: ['教工餐厅', '第三食堂', '第二食堂', '第一食堂'] },
+                series: [{
+                    name: '营收额',
+                    type: 'bar',
+                    data: [150000, 220000, 310000, 480000],
+                    itemStyle: { color: '#6366f1', borderRadius: [0, 10, 10, 0] },
+                    barWidth: '40%'
+                }]
+            });
+        });
+    </script>
+<script>
+(function(){
+  // Add version footer
+  var aside = document.querySelector('aside');
+  if(aside) {
+    var footer = document.createElement('div');
+    footer.className = 'border-t border-slate-800 mt-auto p-3';
+    footer.innerHTML = '<div class="text-xs text-slate-500 text-center">v3.5</div>';
+    aside.appendChild(footer);
+  }
+
+  // Load data and update charts
+  document.addEventListener('DOMContentLoaded', function() {
+    API.get('/dashboard/logistics').then(function(d) {
+      if(!d) return;
+      var cards = document.querySelectorAll('.grid.grid-cols-4.gap-6 > div');
+      if(cards[0]) cards[0].querySelector('h3').textContent = '¥ ' + ((d.todayRevenue || 842500)).toLocaleString('zh-CN', {minimumFractionDigits: 2});
+      if(cards[1]) cards[1].querySelector('h3').textContent = (d.todayOrders || 0).toLocaleString() + ' 次';
+
+      var canteenChart = echarts.getInstanceByDom(document.getElementById('chart-canteen-compare'));
+      if(canteenChart) {
+        canteenChart.setOption({
+          series: [{
+            name: '营收额', type: 'bar',
+            data: [150000, 220000, 310000, (d.todayRevenue || 480000)],
+            itemStyle: { color: '#6366f1', borderRadius: [0, 10, 10, 0] },
+            barWidth: '40%'
+          }]
+        });
+      }
+    });
+
+    API.get('/orders?page=1&size=20').then(function(res) {
+      var heatmapChart = echarts.getInstanceByDom(document.getElementById('chart-heatmap'));
+      if(!heatmapChart || !res || !res.list) return;
+      var total = res.list.length;
+      if(total > 0) {
+        heatmapChart.setOption({
+          series: [{
+            name: '热力值', type: 'heatmap',
+            data: [[0,0,total],[1,0,Math.floor(total*0.6)],[2,0,Math.floor(total*0.8)],[3,0,total],[4,0,Math.floor(total*0.7)],
+                   [0,1,Math.floor(total*0.9)],[1,1,Math.floor(total*0.5)],[2,1,Math.floor(total*0.9)],[3,1,total],[4,1,Math.floor(total*0.8)]],
+            label: { show: false }
+          }]
+        });
+      }
+    });
+  });
+
+  // Refresh button
+  var refreshBtn = document.querySelector('.bg-indigo-600.text-white.rounded-lg');
+  if(refreshBtn) refreshBtn.addEventListener('click', function(){ location.reload(); });
+
+  // Export button
+  var exportBtn = document.querySelector('header button.bg-white');
+  if(exportBtn) exportBtn.addEventListener('click', function(){ alert('报表导出功能开发中，敬请期待。'); });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>校园智慧食堂 - 网页端登录</title>
+<script src="https://modao.cc/agent-py/static/source/js/tailwindcss.js"></script>
+<script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.js"></script>
+</head>
+<body class="bg-slate-900 min-h-screen flex items-center justify-center p-6 relative overflow-hidden">
+<!-- 背景装饰 -->
+<div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+<div class="absolute -top-[20%] -left-[10%] w-[60%] h-[60%] bg-emerald-600 rounded-full blur-[150px] opacity-30"></div>
+<div class="absolute -bottom-[20%] -right-[10%] w-[60%] h-[60%] bg-indigo-600 rounded-full blur-[150px] opacity-20"></div>
+</div>
+
+<div class="w-full max-w-3xl relative z-10">
+<!-- 顶部标题 -->
+<div class="text-center mb-12">
+<div class="w-16 h-16 bg-white/10 backdrop-blur rounded-2xl flex items-center justify-center mx-auto mb-6 border border-white/20">
+<iconify-icon class="text-white text-3xl" icon="mdi:silverware-fork-knife"></iconify-icon>
+</div>
+<h1 class="text-4xl font-black text-white tracking-tight">校园智慧食堂</h1>
+<p class="text-slate-400 mt-3 text-lg">网页端管理平台</p>
+</div>
+
+<!-- 两个入口卡片 -->
+<div class="grid grid-cols-2 gap-6">
+<!-- 网页管理端 -->
+<a href="canteen-login.html" class="group bg-white/5 backdrop-blur border border-white/10 rounded-3xl p-10 hover:bg-white/10 hover:border-emerald-500/50 transition-all duration-300 text-center">
+<div class="w-24 h-24 bg-emerald-600 rounded-[28px] flex items-center justify-center mx-auto mb-6 shadow-xl shadow-emerald-600/30 group-hover:scale-105 transition-transform">
+<iconify-icon class="text-white text-5xl" icon="mdi:chef-hat"></iconify-icon>
+</div>
+<h2 class="text-xl font-bold text-white mb-2">网页管理端</h2>
+<p class="text-slate-400 text-sm leading-relaxed">食堂数字化管理平台<br/>菜品管理 · 库存追踪 · 财务对账</p>
+<div class="mt-6 inline-flex items-center gap-2 text-emerald-400 text-sm font-medium group-hover:gap-3 transition-all">
+<span>进入管理端</span>
+<iconify-icon icon="mdi:arrow-right"></iconify-icon>
+</div>
+</a>
+
+<!-- 网页监管端 -->
+<a href="logistics-login.html" class="group bg-white/5 backdrop-blur border border-white/10 rounded-3xl p-10 hover:bg-white/10 hover:border-indigo-500/50 transition-all duration-300 text-center">
+<div class="w-24 h-24 bg-indigo-600 rounded-[28px] flex items-center justify-center mx-auto mb-6 shadow-xl shadow-indigo-600/30 group-hover:scale-105 transition-transform">
+<iconify-icon class="text-white text-5xl" icon="mdi:shield-lock"></iconify-icon>
+</div>
+<h2 class="text-xl font-bold text-white mb-2">网页监管端</h2>
+<p class="text-slate-400 text-sm leading-relaxed">后勤处监管大厅<br/>食品安全 · 采购审批 · 运营数据</p>
+<div class="mt-6 inline-flex items-center gap-2 text-indigo-400 text-sm font-medium group-hover:gap-3 transition-all">
+<span>进入监管端</span>
+<iconify-icon icon="mdi:arrow-right"></iconify-icon>
+</div>
+</a>
+</div>
+
+<!-- 底部信息 -->
+<div class="text-center mt-12">
+<p class="text-slate-500 text-xs">校园智慧食堂管理系统 v3.5.0 | 网页端</p>
+</div>
+</div>
+</body>
+</html>

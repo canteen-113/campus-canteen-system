@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>食品安全 · 食堂管理端</title>
+<script src="https://modao.cc/agent-py/static/source/js/tailwindcss.js"></script>
+<script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.js"></script>
+<style>
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:999;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(2px)}
+.modal-overlay.hidden{display:none}
+.modal-box{background:#fff;border-radius:24px;width:500px;max-height:85vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.25);padding:28px}
+.modal-box h3{font-size:20px;font-weight:700;color:#1e293b;margin-bottom:20px}
+.modal-box label{display:block;font-size:12px;font-weight:700;color:#64748b;margin-bottom:6px;text-transform:uppercase}
+.modal-box input,.modal-box select{width:100%;padding:10px 14px;border:2px solid #e2e8f0;border-radius:12px;font-size:14px;outline:none;margin-bottom:14px;box-sizing:border-box}
+.modal-box input:focus,.modal-box select:focus{border-color:#2563eb}
+.frow{display:flex;gap:12px}.frow>*{flex:1}
+.btn-row{display:flex;justify-content:flex-end;gap:12px;margin-top:8px}
+.btn-cancel{background:#f1f5f9;color:#475569;border:none;padding:10px 24px;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer}
+.btn-save{background:#2563eb;color:#fff;border:none;padding:10px 24px;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 12px rgba(37,99,235,.2)}
+</style>
+</head>
+<body class="bg-slate-100 min-h-screen flex text-slate-800">
+<aside class="w-64 bg-slate-900 text-slate-300 flex flex-col shrink-0">
+<div class="p-6 flex items-center gap-3">
+<div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center"><iconify-icon class="text-white text-xl" icon="mdi:silverware-fork-knife"></iconify-icon></div>
+<span class="text-white font-bold tracking-tight" id="sidebarTitle">智慧食堂 · 管理端</span>
+</div>
+<nav class="flex-1 px-4 py-4 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="canteen-index.html"><iconify-icon class="text-xl" icon="mdi:view-dashboard"></iconify-icon><span class="text-sm font-medium">首页概览</span></a>
+<div class="text-xs font-semibold text-slate-500 uppercase px-4 py-3 mt-4">业务管理</div>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="canteen-dishes.html"><iconify-icon class="text-xl" icon="mdi:food-variant"></iconify-icon><span class="text-sm font-medium">菜品管理</span></a>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="canteen-stock.html"><iconify-icon class="text-xl" icon="mdi:box-variant"></iconify-icon><span class="text-sm font-medium">食材库存</span></a>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="canteen-verify.html"><iconify-icon class="text-xl" icon="mdi:barcode-scan"></iconify-icon><span class="text-sm font-medium">取餐核销</span></a>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="canteen-feedback.html"><iconify-icon class="text-xl" icon="mdi:comment-quote"></iconify-icon><span class="text-sm font-medium">评价管理</span></a>
+<div class="text-xs font-semibold text-slate-500 uppercase px-4 py-3 mt-4">运营支撑</div>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="canteen-purchase.html"><iconify-icon class="text-xl" icon="mdi:cart-arrow-down"></iconify-icon><span class="text-sm font-medium">采购审批</span></a>
+<a class="flex items-center gap-3 px-4 py-3 bg-blue-600 text-white rounded-xl transition-all" href="canteen-safety.html"><iconify-icon class="text-xl" icon="mdi:shield-check"></iconify-icon><span class="text-sm font-medium">食品安全</span></a>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="canteen-staff-live"><iconify-icon class="text-xl" icon="mdi:account-group"></iconify-icon><span class="text-sm font-medium">员工管理</span></a>
+</nav>
+<div class="p-4 border-t border-slate-800 text-xs text-slate-500 text-center">v3.5.0</div>
+</aside>
+<main class="flex-1 flex flex-col min-w-0">
+<header class="h-16 bg-white border-b border-slate-200 px-8 flex items-center justify-between">
+<h2 class="text-lg font-bold">食品安全全流程监管</h2>
+<div class="flex gap-3">
+<button class="px-4 py-2 bg-blue-600 text-white rounded-xl text-sm font-bold flex items-center gap-2 shadow-lg shadow-blue-100" onclick="openAddSample()"><iconify-icon icon="mdi:plus"></iconify-icon>新增留样</button>
+<button class="px-4 py-2 bg-emerald-600 text-white rounded-xl text-sm font-bold flex items-center gap-2 shadow-lg shadow-emerald-100" onclick="openAddCheck()"><iconify-icon icon="mdi:account-check"></iconify-icon>晨检录入</button>
+</div>
+</header>
+<div class="flex-1 overflow-y-auto p-8 space-y-6">
+<!-- 统计卡片 -->
+<div class="grid grid-cols-4 gap-6">
+<div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm"><p class="text-slate-400 text-xs font-bold uppercase mb-2">留样总数</p><h3 class="text-2xl font-black" id="statTotal">--</h3></div>
+<div class="bg-white p-6 rounded-3xl border border-emerald-100 shadow-sm ring-4 ring-emerald-50"><p class="text-slate-400 text-xs font-bold uppercase mb-2">已留样</p><h3 class="text-2xl font-black text-emerald-600" id="statSampled">--</h3></div>
+<div class="bg-white p-6 rounded-3xl border border-amber-100 shadow-sm ring-4 ring-amber-50"><p class="text-slate-400 text-xs font-bold uppercase mb-2">待留样</p><h3 class="text-2xl font-black text-amber-600" id="statPending">--</h3></div>
+<div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm"><p class="text-slate-400 text-xs font-bold uppercase mb-2">今日晨检</p><h3 class="text-2xl font-black" id="statCheck">--</h3></div>
+</div>
+
+<!-- 留样 + 晨检 两栏 -->
+<div class="grid grid-cols-2 gap-6">
+<!-- 食品留样 -->
+<div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+<div class="p-6 border-b border-slate-100 flex justify-between items-center">
+<h3 class="font-bold">食品留样记录</h3>
+<div class="flex gap-2"><select id="sampleFilter" class="text-xs border border-slate-200 rounded-lg p-1 outline-none" onchange="loadSamples()"><option value="">全部状态</option><option value="SAMPLED">已留样</option><option value="PENDING">待留样</option></select></div>
+</div>
+<div class="p-4 space-y-2" id="sampleList" style="max-height:500px;overflow-y:auto"><p class="text-center text-slate-400 py-8">加载中...</p></div>
+</div>
+
+<!-- 员工晨检 -->
+<div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+<div class="p-6 border-b border-slate-100 flex justify-between items-center">
+<h3 class="font-bold">员工晨检日报</h3>
+<input id="checkDate" type="date" class="text-xs border border-slate-200 rounded-lg p-1 outline-none" onchange="loadChecks()" style="width:140px">
+</div>
+<div class="p-4 space-y-2" id="checkList" style="max-height:500px;overflow-y:auto"><p class="text-center text-slate-400 py-8">加载中...</p></div>
+</div>
+</div>
+</div>
+</main>
+
+<!-- 新增留样 Modal -->
+<div class="modal-overlay hidden" id="addSampleModal"><div class="modal-box"><h3>新增食品留样</h3>
+<div class="frow"><div><label>菜品名称 *</label><input id="sDishName"></div><div><label>食堂ID</label><input id="sCanteenId" type="number" value="1"></div></div>
+<div class="frow"><div><label>时段</label><select id="sMealPeriod"><option value="BREAKFAST">早餐</option><option value="LUNCH" selected>午餐</option><option value="DINNER">晚餐</option></select></div><div><label>留样人</label><input id="sInspector"></div></div>
+<label>留样照片URL</label><input id="sImage" placeholder="https://...">
+<div class="btn-row"><button class="btn-cancel" onclick="document.getElementById('addSampleModal').classList.add('hidden')">取消</button><button class="btn-save" onclick="doAddSample()">确认留样</button></div>
+</div></div>
+
+<!-- 补录 Modal -->
+<div class="modal-overlay hidden" id="recordModal"><div class="modal-box"><h3>补录留样</h3>
+<input type="hidden" id="rId">
+<label>留样人</label><input id="rInspector">
+<label>照片URL</label><input id="rImage" placeholder="https://...">
+<div class="btn-row"><button class="btn-cancel" onclick="document.getElementById('recordModal').classList.add('hidden')">取消</button><button class="btn-save" onclick="doRecord()">确认补录</button></div>
+</div></div>
+
+<!-- 晨检 Modal -->
+<div class="modal-overlay hidden" id="checkModal"><div class="modal-box"><h3>员工晨检录入</h3>
+<div class="frow"><div><label>员工ID *</label><input id="cEmployeeId" type="number"></div><div><label>日期</label><input id="cDate" type="date"></div></div>
+<div class="frow"><div><label>体温(℃)</label><input id="cTemperature" type="number" step="0.1" placeholder="36.5"></div><div><label>是否合格</label><select id="cQualified"><option value="1">合格</option><option value="0">不合格</option></select></div></div>
+<label>备注</label><input id="cRemark" placeholder="如：咳嗽、发热">
+<div class="btn-row"><button class="btn-cancel" onclick="document.getElementById('checkModal').classList.add('hidden')">取消</button><button class="btn-save" onclick="doAddCheck()">确认录入</button></div>
+</div></div>
+
+<script>
+var API_BASE='http://localhost:8080/api';
+
+// ===== 食品留样 =====
+function loadSamples(){
+  var filter=document.getElementById('sampleFilter').value;
+  fetch(API_BASE+'/safety/samples').then(function(r){return r.json()}).then(function(r){
+    if(!r||r.code!==200)return;
+    var list=r.data||[];if(!Array.isArray(list))list=[];
+    var now=new Date(),sampled=0,pending=0,h='';
+    for(var i=0;i<list.length;i++){
+      var s=list[i];
+      if(s.status==='SAMPLED')sampled++;else pending++;
+      if(filter&&s.status!==filter)continue;
+      var created=new Date(s.createTime),hoursAgo=Math.floor((now-created)/3600000);
+      var expired=hoursAgo>48;
+      var isDone=s.status==='SAMPLED';
+      var bg=isDone?(expired?'bg-red-50 border border-red-100':'bg-slate-50'):'bg-orange-50 border border-orange-100';
+      h+='<div class="flex items-center justify-between p-4 '+bg+' rounded-2xl"><div class="flex items-center gap-4"><div class="w-10 h-10 '+(s.image?'':'bg-white rounded-lg flex items-center justify-center text-slate-300')+'">'+(s.image?'<img alt="" class="w-10 h-10 rounded-lg object-cover" src="'+s.image+'"/>':'<iconify-icon icon="mdi:image-plus"></iconify-icon>')+'</div><div><p class="text-sm font-bold">'+(s.dishName||'')+'</p><p class="text-[10px] '+(isDone?(expired?'text-red-500 font-bold':'text-slate-400'):'text-orange-600 font-bold')+'">'+(s.mealPeriod||'')+' · '+(s.inspector||'待留样')+(expired?' · ⚠已超48h':'')+'</p></div></div><div class="flex items-center gap-2">';
+      if(isDone){h+='<span class="text-xs font-bold '+(expired?'text-red-500':'text-emerald-600')+'">'+(expired?'已过期':'已留样')+'</span>';}
+      else{h+='<button class="bg-blue-600 text-white px-3 py-1 rounded-lg text-xs font-bold mr-1" onclick="openRecord('+s.id+')">补录</button>';}
+      h+='<button class="p-1 text-slate-400 hover:text-red-500" onclick="deleteSample('+s.id+')"><iconify-icon icon="mdi:delete-outline"></iconify-icon></button></div></div>';
+    }
+    document.getElementById('sampleList').innerHTML=h||'<p class="text-center text-slate-400 py-4">'+(filter?'无匹配记录':'暂无留样')+'</p>';
+    document.getElementById('statTotal').textContent=list.length+' 项';
+    document.getElementById('statSampled').textContent=sampled+' 项';
+    document.getElementById('statPending').textContent=pending+' 项';
+  }).catch(function(){});
+}
+
+function openAddSample(){document.getElementById('sDishName').value='';document.getElementById('sInspector').value='';document.getElementById('sImage').value='';document.getElementById('addSampleModal').classList.remove('hidden');}
+function doAddSample(){
+  var d={dishName:document.getElementById('sDishName').value,canteenId:parseInt(document.getElementById('sCanteenId').value)||1,mealPeriod:document.getElementById('sMealPeriod').value,inspector:document.getElementById('sInspector').value,image:document.getElementById('sImage').value};
+  if(!d.dishName){alert('请输入菜品名称');return;}
+  fetch(API_BASE+'/safety/samples',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)}).then(function(r){return r.json()}).then(function(r){if(r.code===200){alert('已添加');document.getElementById('addSampleModal').classList.add('hidden');loadSamples();}else alert(r.message||'失败');}).catch(function(){alert('网络错误');});
+}
+
+function openRecord(id){document.getElementById('rId').value=id;document.getElementById('rInspector').value='';document.getElementById('rImage').value='';document.getElementById('recordModal').classList.remove('hidden');}
+function doRecord(){
+  var id=document.getElementById('rId').value,inspector=document.getElementById('rInspector').value,img=document.getElementById('rImage').value;
+  if(!inspector){alert('请输入留样人');return;}
+  fetch(API_BASE+'/safety/samples/'+id+'?inspector='+encodeURIComponent(inspector)+'&image='+encodeURIComponent(img||''),{method:'PUT'}).then(function(r){return r.json()}).then(function(r){if(r.code===200){alert('补录成功');document.getElementById('recordModal').classList.add('hidden');loadSamples();}else alert(r.message||'失败');}).catch(function(){alert('网络错误');});
+}
+
+function deleteSample(id){if(!confirm('确定删除此留样记录？'))return;fetch(API_BASE+'/safety/samples/'+id,{method:'DELETE'}).then(function(r){return r.json()}).then(function(r){if(r.code===200){alert('已删除');loadSamples();}else alert(r.message||'失败');}).catch(function(){alert('网络错误');});}
+
+// ===== 员工晨检 =====
+function loadChecks(){
+  var dt=document.getElementById('checkDate').value;
+  var url=API_BASE+'/safety/health-checks'+(dt?'?date='+dt:'');
+  fetch(url).then(function(r){return r.json()}).then(function(r){
+    if(!r||r.code!==200)return;
+    var list=r.data||[];if(!Array.isArray(list))list=[];
+    var h='',qualified=0;
+    for(var i=0;i<list.length;i++){
+      var c=list[i];
+      if(c.isQualified)qualified++;
+      h+='<div class="flex items-center justify-between p-3 '+(c.isQualified?'bg-slate-50':'bg-red-50 border border-red-100')+' rounded-2xl"><div class="flex items-center gap-3"><div class="w-8 h-8 rounded-full '+(c.isQualified?'bg-emerald-100 text-emerald-600':'bg-red-100 text-red-600')+' flex items-center justify-center font-bold text-xs">'+(c.employeeId||'?')+'</div><div><p class="text-sm font-bold">员工 #'+(c.employeeId||'--')+'</p><p class="text-[10px] text-slate-400">体温: '+(c.temperature||'--')+'℃ '+(c.remark||'')+'</p></div></div><span class="text-xs font-bold '+(c.isQualified?'text-emerald-600':'text-red-600')+'">'+(c.isQualified?'合格':'异常')+'</span></div>';
+    }
+    document.getElementById('checkList').innerHTML=h||'<p class="text-center text-slate-400 py-4">暂无晨检记录</p>';
+    document.getElementById('statCheck').textContent=list.length+' 人';
+  }).catch(function(){});
+}
+
+function openAddCheck(){
+  document.getElementById('cEmployeeId').value='';document.getElementById('cTemperature').value='';
+  document.getElementById('cRemark').value='';document.getElementById('cDate').value=new Date().toISOString().slice(0,10);
+  document.getElementById('cQualified').value='1';document.getElementById('checkModal').classList.remove('hidden');
+}
+function doAddCheck(){
+  var d={employeeId:parseInt(document.getElementById('cEmployeeId').value),checkDate:document.getElementById('cDate').value,temperature:parseFloat(document.getElementById('cTemperature').value)||null,isQualified:parseInt(document.getElementById('cQualified').value),remark:document.getElementById('cRemark').value};
+  if(!d.employeeId){alert('请输入员工ID');return;}
+  fetch(API_BASE+'/safety/health-checks',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)}).then(function(r){return r.json()}).then(function(r){if(r.code===200){alert('晨检录入成功');document.getElementById('checkModal').classList.add('hidden');loadChecks();}else alert(r.message||'失败');}).catch(function(){alert('网络错误');});
+}
+
+// 初始化
+(function init(){
+  var user=JSON.parse(sessionStorage.getItem('user')||'null'),role=user?user.role:'';
+  var st=document.getElementById('sidebarTitle');
+  if(role==='SUPERVISOR'){if(st)st.textContent='后勤处 · 监管端';}
+  else if(role==='CANTEEN_MANAGER'){if(st)st.textContent='第一食堂 · 管理端';}
+  else if(role==='SUPER_ADMIN'){if(st)st.textContent='超级管理 · 系统端';}
+  document.getElementById('checkDate').value=new Date().toISOString().slice(0,10);
+  loadSamples();loadChecks();
+})();
+</script>
+</body>
+</html>

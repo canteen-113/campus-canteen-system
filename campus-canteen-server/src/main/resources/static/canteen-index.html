@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>后台管理首页 - 食堂端</title>
+<script src="https://modao.cc/agent-py/static/source/js/tailwindcss.js"></script>
+<script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.js"></script>
+<script src="https://modao.cc/agent-py/static/source/js/echarts.min.js"></script>
+</head>
+<body class="bg-slate-100 min-h-screen flex">
+<!-- 侧边栏 -->
+<aside class="w-64 bg-slate-900 text-slate-300 flex flex-col shrink-0">
+<div class="p-6 flex items-center gap-3">
+<div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+<iconify-icon class="text-white text-xl" icon="mdi:silverware-fork-knife"></iconify-icon>
+</div>
+<span class="text-white font-bold tracking-tight">智慧食堂 · 管理端</span>
+</div>
+<nav class="flex-1 px-4 py-4 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 bg-blue-600 text-white rounded-xl transition-all" href="canteen-index.html">
+<iconify-icon class="text-xl" icon="mdi:view-dashboard"></iconify-icon>
+<span class="text-sm font-medium">首页概览</span>
+</a>
+<div class="text-xs font-semibold text-slate-500 uppercase px-4 py-3 mt-4">业务管理</div>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="canteen-dishes.html">
+<iconify-icon class="text-xl" icon="mdi:food-variant"></iconify-icon>
+<span class="text-sm font-medium">菜品管理</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="canteen-stock.html">
+<iconify-icon class="text-xl" icon="mdi:box-variant"></iconify-icon>
+<span class="text-sm font-medium">食材库存</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="canteen-verify.html">
+<iconify-icon class="text-xl" icon="mdi:barcode-scan"></iconify-icon>
+<span class="text-sm font-medium">取餐核销</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="canteen-feedback.html">
+<iconify-icon class="text-xl" icon="mdi:comment-quote"></iconify-icon>
+<span class="text-sm font-medium">评价管理</span>
+</a>
+<div class="text-xs font-semibold text-slate-500 uppercase px-4 py-3 mt-4">运营支撑</div>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="canteen-purchase.html">
+<iconify-icon class="text-xl" icon="mdi:cart-arrow-down"></iconify-icon>
+<span class="text-sm font-medium">采购审批</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="canteen-safety.html">
+<iconify-icon class="text-xl" icon="mdi:shield-check"></iconify-icon>
+<span class="text-sm font-medium">食品安全</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="canteen-staff-live">
+<iconify-icon class="text-xl" icon="mdi:account-group"></iconify-icon>
+<span class="text-sm font-medium">员工管理</span>
+</a>
+</nav>
+<div class="p-4 border-t border-slate-800">
+<div class="bg-slate-800 rounded-2xl p-4 flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-slate-300">
+<iconify-icon class="text-xl" icon="mdi:account-tie"></iconify-icon>
+</div>
+<div class="flex-1 overflow-hidden">
+<p class="text-sm text-white font-medium truncate">第一食堂经理</p>
+<p class="text-xs text-slate-500">2026-04-30</p>
+</div>
+<span onclick="sessionStorage.clear();location.href='canteen-login.html'" style="cursor:pointer" title="退出">
+<iconify-icon class="text-slate-500 hover:text-red-400" icon="mdi:logout"></iconify-icon>
+</span>
+</div>
+</div>
+</aside>
+<!-- 主体内容 -->
+<main class="flex-1 flex flex-col min-w-0">
+<!-- 顶部通栏 -->
+<header class="h-16 bg-white border-b border-slate-200 px-8 flex items-center justify-between">
+<h2 class="text-lg font-bold text-slate-800">首页概览</h2>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2 px-3 py-1.5 bg-slate-100 rounded-lg text-slate-600 text-sm">
+<iconify-icon class="text-lg" icon="mdi:calendar-range"></iconify-icon>
+<span>2026年04月30日 (星期四)</span>
+</div>
+<div class="relative">
+<iconify-icon class="text-2xl text-slate-400" icon="mdi:bell-outline"></iconify-icon>
+<span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 border-2 border-white rounded-full flex items-center justify-center text-[8px] text-white">4</span>
+</div>
+</div>
+</header>
+<!-- 内容滚动区 -->
+<div class="flex-1 overflow-y-auto p-8 space-y-8">
+<!-- 核心指标 -->
+<div class="grid grid-cols-4 gap-6">
+<div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex flex-col">
+<div class="flex justify-between items-start mb-4">
+<div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center">
+<iconify-icon class="text-2xl" icon="mdi:currency-cny"></iconify-icon>
+</div>
+<span class="text-xs text-green-600 font-bold bg-green-50 px-2 py-1 rounded">+12.5%</span>
+</div>
+<p class="text-slate-500 text-sm">今日总营收</p>
+<h3 class="text-2xl font-black text-slate-900 mt-1" id="todayRevenue">¥ 24,850.50</h3>
+</div>
+<div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex flex-col">
+<div class="flex justify-between items-start mb-4">
+<div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center">
+<iconify-icon class="text-2xl" icon="mdi:account-group"></iconify-icon>
+</div>
+<span class="text-xs text-green-600 font-bold bg-green-50 px-2 py-1 rounded">+4.2%</span>
+</div>
+<p class="text-slate-500 text-sm">就餐总人数</p>
+<h3 class="text-2xl font-black text-slate-900 mt-1" id="todayDiners">1,482 人</h3>
+</div>
+<div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex flex-col">
+<div class="flex justify-between items-start mb-4">
+<div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center">
+<iconify-icon class="text-2xl" icon="mdi:clock-check-outline"></iconify-icon>
+</div>
+<span class="text-xs text-slate-400 font-bold bg-slate-50 px-2 py-1 rounded">实时</span>
+</div>
+<p class="text-slate-500 text-sm">待核销订单</p>
+<h3 class="text-2xl font-black text-slate-900 mt-1" id="pendingOrders">86 份</h3>
+</div>
+<div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex flex-col">
+<div class="flex justify-between items-start mb-4">
+<div class="w-12 h-12 bg-rose-50 text-rose-600 rounded-2xl flex items-center justify-center">
+<iconify-icon class="text-2xl" icon="mdi:alert-decagram-outline"></iconify-icon>
+</div>
+<span class="text-xs text-rose-600 font-bold bg-rose-50 px-2 py-1 rounded">5条新预警</span>
+</div>
+<p class="text-slate-500 text-sm">库存预警食材</p>
+<h3 class="text-2xl font-black text-slate-900 mt-1" id="stockAlerts">12 种</h3>
+</div>
+</div>
+<!-- 图表与待办 -->
+<div class="grid grid-cols-3 gap-8">
+<div class="col-span-2 bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-bold text-slate-800">24小时销量趋势</h3>
+<select class="text-xs border border-slate-200 rounded-lg p-1 outline-none">
+<option>今日 (04-30)</option>
+<option>昨日 (04-29)</option>
+</select>
+</div>
+<div class="h-64 w-full" id="chart-sales"></div>
+</div>
+<div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex flex-col">
+<h3 class="font-bold text-slate-800 mb-6">快捷入口 &amp; 待办</h3>
+<div class="space-y-4 flex-1">
+<div class="flex items-center gap-4 p-3 hover:bg-slate-50 rounded-2xl border border-transparent hover:border-slate-100 transition-all cursor-pointer">
+<div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center">
+<iconify-icon class="text-xl" icon="mdi:file-edit"></iconify-icon>
+</div>
+<div class="flex-1">
+<p class="text-sm font-bold">采购单待审核</p>
+<p class="text-xs text-slate-400">来自 库管老张 · 10分钟前</p>
+</div>
+<iconify-icon class="text-slate-300" icon="mdi:chevron-right"></iconify-icon>
+</div>
+<div class="flex items-center gap-4 p-3 hover:bg-slate-50 rounded-2xl border border-transparent hover:border-slate-100 transition-all cursor-pointer">
+<div class="w-10 h-10 bg-amber-100 text-amber-600 rounded-xl flex items-center justify-center">
+<iconify-icon class="text-xl" icon="mdi:comment-alert"></iconify-icon>
+</div>
+<div class="flex-1">
+<p class="text-sm font-bold">新投诉待处理</p>
+<p class="text-xs text-slate-400">关于 菜品价格问题 · 1小时前</p>
+</div>
+<iconify-icon class="text-slate-300" icon="mdi:chevron-right"></iconify-icon>
+</div>
+<div class="flex items-center gap-4 p-3 hover:bg-slate-50 rounded-2xl border border-transparent hover:border-slate-100 transition-all cursor-pointer">
+<div class="w-10 h-10 bg-green-100 text-green-600 rounded-xl flex items-center justify-center">
+<iconify-icon class="text-xl" icon="mdi:medical-bag"></iconify-icon>
+</div>
+<div class="flex-1">
+<p class="text-sm font-bold">食品留样确认</p>
+<p class="text-xs text-slate-400">今日午餐 12个菜品待拍照</p>
+</div>
+<iconify-icon class="text-slate-300" icon="mdi:chevron-right"></iconify-icon>
+</div>
+</div>
+<button class="mt-6 w-full py-3 bg-slate-100 text-slate-600 rounded-2xl text-sm font-bold hover:bg-slate-200 transition-all">查看全部工作流</button>
+</div>
+</div>
+<!-- 数据表格 -->
+<div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+<div class="px-8 py-6 border-b border-slate-100 flex justify-between items-center">
+<h3 class="font-bold text-slate-800">实时取餐动态</h3>
+<div class="flex gap-2">
+<span class="flex items-center gap-1 text-xs text-slate-500"><span class="w-2 h-2 bg-emerald-500 rounded-full"></span> 备餐中</span>
+<span class="flex items-center gap-1 text-xs text-slate-500 ml-4"><span class="w-2 h-2 bg-blue-500 rounded-full"></span> 已取餐</span>
+</div>
+</div>
+<table class="w-full text-left">
+<thead class="bg-slate-50 text-slate-500 text-xs uppercase tracking-wider">
+<tr>
+<th class="px-8 py-4 font-bold">订单号</th>
+<th class="px-8 py-4 font-bold">就餐人</th>
+<th class="px-8 py-4 font-bold">窗口</th>
+<th class="px-8 py-4 font-bold">菜品明细</th>
+<th class="px-8 py-4 font-bold">预约时间</th>
+<th class="px-8 py-4 font-bold">状态</th>
+</tr>
+</thead>
+<tbody id="orderTableBody" class="divide-y divide-slate-100">
+<tr class="hover:bg-slate-50 transition-all">
+<td class="px-8 py-4 text-sm font-medium">#202604300085</td>
+<td class="px-8 py-4">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-xs">张</div>
+<span class="text-sm">张明伟 (20261021)</span>
+</div>
+</td>
+<td class="px-8 py-4 text-sm">03 窗口</td>
+<td class="px-8 py-4 text-sm">红烧牛腩 + 银耳汤</td>
+<td class="px-8 py-4 text-sm text-slate-500">11:35:20</td>
+<td class="px-8 py-4">
+<span class="bg-emerald-50 text-emerald-600 px-3 py-1 rounded-full text-xs font-bold">备餐中</span>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 transition-all">
+<td class="px-8 py-4 text-sm font-medium">#202604300084</td>
+<td class="px-8 py-4">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center font-bold text-xs">李</div>
+<span class="text-sm">李梦雨 (20261034)</span>
+</div>
+</td>
+<td class="px-8 py-4 text-sm">05 窗口</td>
+<td class="px-8 py-4 text-sm">清蒸鲈鱼 + 白米饭</td>
+<td class="px-8 py-4 text-sm text-slate-500">11:32:15</td>
+<td class="px-8 py-4">
+<span class="bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-xs font-bold">已取餐</span>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 transition-all">
+<td class="px-8 py-4 text-sm font-medium">#202604300083</td>
+<td class="px-8 py-4">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center font-bold text-xs">王</div>
+<span class="text-sm">王晓冬 (20261102)</span>
+</div>
+</td>
+<td class="px-8 py-4 text-sm">02 窗口</td>
+<td class="px-8 py-4 text-sm">回锅肉套饭</td>
+<td class="px-8 py-4 text-sm text-slate-500">11:30:02</td>
+<td class="px-8 py-4">
+<span class="bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-xs font-bold">已取餐</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</main>
+<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var salesChart = echarts.init(document.getElementById('chart-sales'));
+            var option = {
+                animation: false,
+                grid: { left: '3%', right: '4%', bottom: '3%', top: '3%', containLabel: true },
+                tooltip: { trigger: 'axis' },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: ['06:00', '08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00'],
+                    axisLine: { lineStyle: { color: '#e2e8f0' } }
+                },
+                yAxis: {
+                    type: 'value',
+                    splitLine: { lineStyle: { color: '#f1f5f9' } }
+                },
+                series: [{
+                    name: '订单量',
+                    data: [120, 480, 250, 1200, 300, 450, 980, 150],
+                    type: 'line',
+                    smooth: true,
+                    symbol: 'none',
+                    lineStyle: { width: 4, color: '#2563eb' },
+                    areaStyle: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            { offset: 0, color: 'rgba(37, 99, 235, 0.2)' },
+                            { offset: 1, color: 'rgba(37, 99, 235, 0)' }
+                        ])
+                    }
+                }]
+            };
+            salesChart.setOption(option);
+        });
+    </script>
+<script src="api-helper.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  // Fetch dashboard stats
+  API.get('/dashboard/canteen').then(function (res) {
+    if (res.code === 200 && res.data) {
+      var d = res.data;
+      if (d.todayRevenue !== undefined) {
+        document.getElementById('todayRevenue').textContent = '¥ ' + Number(d.todayRevenue).toLocaleString('zh-CN', { minimumFractionDigits: 2 });
+      }
+      if (d.todayDiners !== undefined) {
+        document.getElementById('todayDiners').textContent = Number(d.todayDiners).toLocaleString('zh-CN') + ' 人';
+      }
+      if (d.pendingOrders !== undefined) {
+        document.getElementById('pendingOrders').textContent = d.pendingOrders + ' 份';
+      }
+      if (d.stockAlerts !== undefined) {
+        document.getElementById('stockAlerts').textContent = d.stockAlerts + ' 种';
+      }
+
+      // Render recent orders
+      if (d.recentOrders && d.recentOrders.length) {
+        var tbody = document.getElementById('orderTableBody');
+        tbody.innerHTML = '';
+        d.recentOrders.forEach(function (order) {
+          var statusClass = order.status === '已取餐' ? 'bg-blue-50 text-blue-600' : 'bg-emerald-50 text-emerald-600';
+          var surname = order.studentName ? order.studentName.charAt(0) : '?';
+          var tr = document.createElement('tr');
+          tr.className = 'hover:bg-slate-50 transition-all';
+          tr.innerHTML =
+            '<td class="px-8 py-4 text-sm font-medium">#' + (order.orderNo || '') + '</td>' +
+            '<td class="px-8 py-4">' +
+              '<div class="flex items-center gap-2">' +
+                '<div class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-xs">' + surname + '</div>' +
+                '<span class="text-sm">' + (order.studentName || '') + ' (' + (order.studentNo || '') + ')</span>' +
+              '</div>' +
+            '</td>' +
+            '<td class="px-8 py-4 text-sm">' + (order.window || '') + '</td>' +
+            '<td class="px-8 py-4 text-sm">' + (order.dishes || '') + '</td>' +
+            '<td class="px-8 py-4 text-sm text-slate-500">' + (order.time || '') + '</td>' +
+            '<td class="px-8 py-4"><span class="' + statusClass + ' px-3 py-1 rounded-full text-xs font-bold">' + (order.status || '') + '</span></td>';
+          tbody.appendChild(tr);
+        });
+      }
+    }
+  }).catch(function (err) {
+    console.error('Failed to fetch dashboard:', err);
+  });
+});
+</script>
+</body>
+</html>

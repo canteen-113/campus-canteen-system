@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>采购审批 - 食堂管理端</title>
+<script src="https://modao.cc/agent-py/static/source/js/tailwindcss.js"></script>
+<script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.js"></script>
+<style>
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:999;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(2px)}
+.modal-overlay.hidden{display:none}
+.modal-box{background:#fff;border-radius:24px;width:580px;max-height:85vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.25);padding:28px}
+.modal-box h3{font-size:20px;font-weight:700;color:#1e293b;margin-bottom:20px}
+.modal-box label{display:block;font-size:12px;font-weight:700;color:#64748b;margin-bottom:6px;text-transform:uppercase}
+.modal-box input,.modal-box select,.modal-box textarea{width:100%;padding:10px 14px;border:2px solid #e2e8f0;border-radius:12px;font-size:14px;outline:none;margin-bottom:14px;box-sizing:border-box}
+.modal-box input:focus,.modal-box select:focus{border-color:#2563eb}
+.btn-row{display:flex;justify-content:flex-end;gap:12px;margin-top:8px}
+.btn-cancel{background:#f1f5f9;color:#475569;border:none;padding:10px 24px;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer}
+.btn-save{background:#2563eb;color:#fff;border:none;padding:10px 24px;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 12px rgba(37,99,235,.2)}
+.item-row{display:flex;gap:8px;align-items:center;margin-bottom:8px;padding:8px;background:#f8fafc;border-radius:12px}
+.item-row input{flex:1;margin-bottom:0!important;min-width:0}
+.item-row input.qty{width:70px;flex:none}.item-row input.price{width:90px;flex:none}
+.item-row button{background:#fef2f2;color:#f87171;border:none;padding:6px 12px;border-radius:8px;cursor:pointer;font-size:12px;flex:none}
+.detail-table{width:100%;border-collapse:collapse;margin:12px 0}
+.detail-table th{font-size:11px;color:#94a3b8;text-align:left;padding:8px 12px;background:#f8fafc;text-transform:uppercase}
+.detail-table td{padding:8px 12px;font-size:13px;border-bottom:1px solid #f1f5f9}
+</style>
+</head>
+<body class="bg-slate-100 min-h-screen flex text-slate-800">
+<aside class="w-64 bg-slate-900 text-slate-300 flex flex-col shrink-0">
+<div class="p-6 flex items-center gap-3">
+<div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center"><iconify-icon class="text-white text-xl" icon="mdi:silverware-fork-knife"></iconify-icon></div>
+<span class="text-white font-bold tracking-tight" id="sidebarTitle">智慧食堂 · 管理端</span>
+</div>
+<nav class="flex-1 px-4 py-4 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="canteen-index.html"><iconify-icon class="text-xl" icon="mdi:view-dashboard"></iconify-icon><span class="text-sm font-medium">首页概览</span></a>
+<div class="text-xs font-semibold text-slate-500 uppercase px-4 py-3 mt-4">业务管理</div>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="canteen-dishes.html"><iconify-icon class="text-xl" icon="mdi:food-variant"></iconify-icon><span class="text-sm font-medium">菜品管理</span></a>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="canteen-stock.html"><iconify-icon class="text-xl" icon="mdi:box-variant"></iconify-icon><span class="text-sm font-medium">食材库存</span></a>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="canteen-verify.html"><iconify-icon class="text-xl" icon="mdi:barcode-scan"></iconify-icon><span class="text-sm font-medium">取餐核销</span></a>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="canteen-feedback.html"><iconify-icon class="text-xl" icon="mdi:comment-quote"></iconify-icon><span class="text-sm font-medium">评价管理</span></a>
+<div class="text-xs font-semibold text-slate-500 uppercase px-4 py-3 mt-4">运营支撑</div>
+<a class="flex items-center gap-3 px-4 py-3 bg-blue-600 text-white rounded-xl transition-all" href="canteen-purchase.html"><iconify-icon class="text-xl" icon="mdi:cart-arrow-down"></iconify-icon><span class="text-sm font-medium">采购审批</span></a>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="canteen-safety.html"><iconify-icon class="text-xl" icon="mdi:shield-check"></iconify-icon><span class="text-sm font-medium">食品安全</span></a>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="canteen-staff-live"><iconify-icon class="text-xl" icon="mdi:account-group"></iconify-icon><span class="text-sm font-medium">员工管理</span></a>
+</nav>
+<div class="p-4 border-t border-slate-800 text-xs text-slate-500 text-center">v3.5.0</div>
+</aside>
+<main class="flex-1 flex flex-col min-w-0">
+<header class="h-16 bg-white border-b border-slate-200 px-8 flex items-center justify-between">
+<h2 class="text-lg font-bold">采购申请与审批</h2>
+<div id="headerInfo" class="text-sm text-slate-400"></div>
+</header>
+<div class="flex-1 overflow-y-auto p-8 space-y-6">
+<!-- 过滤栏 + 新建按钮 -->
+<div class="flex justify-between items-center">
+<div class="flex gap-3">
+<button class="px-4 py-2 bg-white border border-slate-200 rounded-xl text-xs font-bold text-blue-600 shadow-sm" onclick="loadPurchases('')">全部</button>
+<button class="px-4 py-2 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-500" onclick="loadPurchases('PENDING_MANAGER')">待审批</button>
+<button class="px-4 py-2 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-500" onclick="loadPurchases('APPROVED')">已通过</button>
+</div>
+<div id="createBtnArea"></div>
+</div>
+<!-- 采购单列表 -->
+<div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+<table class="w-full text-left">
+<thead class="bg-slate-50 border-b border-slate-100">
+<tr><th class="px-6 py-4 text-xs font-bold text-slate-400">单据编号</th><th class="px-6 py-4 text-xs font-bold text-slate-400">物料摘要</th><th class="px-6 py-4 text-xs font-bold text-slate-400">总金额</th><th class="px-6 py-4 text-xs font-bold text-slate-400">状态</th><th class="px-6 py-4 text-xs font-bold text-slate-400">申请时间</th><th class="px-6 py-4 text-xs font-bold text-slate-400">操作</th></tr>
+</thead>
+<tbody class="divide-y divide-slate-50 text-sm" id="poBody"><tr><td colspan="6" class="px-6 py-8 text-center text-slate-400">加载中...</td></tr></tbody>
+</table>
+</div>
+</div>
+</main>
+
+<!-- 新建采购 Modal -->
+<div class="modal-overlay hidden" id="createModal"><div class="modal-box"><h3>新建采购申请</h3>
+<label>部门</label><input id="poDept" value="第一食堂">
+<label>期望到货日期</label><input id="poDate" type="date">
+<label>采购事由</label><input id="poReason" placeholder="如：应对五一假期前食材补库">
+<label>物料明细</label><div id="poItems"><div class="item-row"><input placeholder="物料名称"><input placeholder="规格"><input class="qty" placeholder="数量" type="number" step="0.1"><input class="price" placeholder="单价" type="number" step="0.01"><button onclick="this.parentElement.remove()">x</button></div></div>
+<button onclick="addItemRow()" style="background:#eff6ff;color:#2563eb;border:none;padding:8px 16px;border-radius:8px;cursor:pointer;font-size:12px;margin-bottom:14px;">+ 添加物料</button>
+<div class="btn-row"><button class="btn-cancel" onclick="closeModal('createModal')">取消</button><button class="btn-save" onclick="doCreate()">提交申请</button></div>
+</div></div>
+
+<!-- 详情 Modal -->
+<div class="modal-overlay hidden" id="detailModal"><div class="modal-box" id="detailContent"></div></div>
+
+<script src="api-helper.js"></script>
+<script>
+var API_BASE='http://localhost:8080/api';
+var user=API.getUser();
+var role=user?user.role:'';
+var userName=user?user.name:'管理员';
+
+function getAuthHeaders(){
+  var h={'Content-Type':'application/json'};
+  var tk=sessionStorage.getItem('token');
+  if(tk)h['Authorization']='Bearer '+tk;
+  return h;
+}
+
+function loadPurchases(status){
+  var url=API_BASE+'/purchases?page=1&size=50';
+  if(status)url+='&status='+encodeURIComponent(status);
+  var tb=document.getElementById('poBody');if(!tb)return;
+  fetch(url,{headers:getAuthHeaders()})
+  .then(function(r){return r.json();})
+  .then(function(r){
+    if(!r||r.code!==200||!r.data){tb.innerHTML='<tr><td colspan="6" class="px-6 py-8 text-center text-slate-400">加载失败</td></tr>';return;}
+    var list=r.data.list||r.data.content||r.data.records||[];
+    if(!list.length){tb.innerHTML='<tr><td colspan="6" class="px-6 py-8 text-center text-slate-400">暂无采购单</td></tr>';return;}
+    var h='';
+    for(var i=0;i<list.length;i++){
+      var po=list[i];
+      var st=po.status||'',stCls='bg-orange-50 text-orange-600';
+      var stTxt={'PENDING_MANAGER':'待经理审批','PENDING_FINANCE':'待财务审批','PENDING_DIRECTOR':'待领导审批','APPROVED':'已通过','REJECTED':'已驳回'}[st]||st;
+      if(st==='APPROVED')stCls='bg-emerald-50 text-emerald-600';
+      else if(st==='REJECTED')stCls='bg-red-50 text-red-600';
+      var btns='';
+      if((role==='SUPERVISOR'||role==='SUPER_ADMIN')&&(st||'').indexOf('PENDING')===0){
+        btns='<button class="px-3 py-1 bg-emerald-50 text-emerald-600 rounded-lg text-xs font-bold mr-1" onclick="event.stopPropagation();doApprove('+po.id+')">通过</button><button class="px-3 py-1 bg-red-50 text-red-600 rounded-lg text-xs font-bold mr-1" onclick="event.stopPropagation();doReject('+po.id+')">驳回</button>';
+      }
+      if((role==='CANTEEN_MANAGER'||role==='SUPER_ADMIN')&&(st||'').indexOf('PENDING')===0){
+        btns+='<button class="px-3 py-1 bg-slate-100 text-slate-500 rounded-lg text-xs font-bold" onclick="event.stopPropagation();doCancel('+po.id+')">撤回</button>';
+      }
+      if(!btns)btns='<span class="text-xs text-slate-400">--</span>';
+      h+='<tr class="hover:bg-blue-50 cursor-pointer transition-all" onclick="showDetail('+po.id+')"><td class="px-6 py-4 font-bold text-xs">'+(po.poNo||'')+'</td><td class="px-6 py-4 text-xs">'+(po.summary||'')+'</td><td class="px-6 py-4 font-black">¥'+(po.totalAmount||0)+'</td><td class="px-6 py-4"><span class="'+stCls+' px-2 py-1 rounded-lg text-xs font-bold">'+stTxt+'</span></td><td class="px-6 py-4 text-xs">'+(po.createTime||'')+'</td><td class="px-6 py-4" onclick="event.stopPropagation()">'+btns+'</td></tr>';
+    }
+    tb.innerHTML=h;
+  }).catch(function(e){tb.innerHTML='<tr><td colspan="6" class="px-6 py-8 text-center text-slate-400">网络错误</td></tr>';});
+}
+
+// ===== 详情弹窗 =====
+function showDetail(id){
+  fetch(API_BASE+'/purchases/'+id,{headers:getAuthHeaders()})
+  .then(function(r){return r.json();})
+  .then(function(r){
+    if(!r||r.code!==200||!r.data){alert('加载详情失败');return;}
+    var detail=r.data;
+    var po=detail.po||detail;
+    var items=detail.items||[];
+    var st=po.status||'',stTxt={'PENDING_MANAGER':'待经理审批','PENDING_FINANCE':'待财务审批','PENDING_DIRECTOR':'待领导审批','APPROVED':'已通过','REJECTED':'已驳回'}[st]||st;
+    var h='<h3>采购单详情 <span style="font-size:13px;color:#94a3b8;font-weight:400;">'+(po.poNo||'')+'</span></h3>';
+    h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">';
+    h+='<div><label>部门</label><div style="font-size:14px;font-weight:600;">'+(po.department||'--')+'</div></div>';
+    h+='<div><label>期望到货</label><div style="font-size:14px;font-weight:600;">'+(po.expectedDate||'--')+'</div></div>';
+    h+='<div><label>采购事由</label><div style="font-size:14px;font-weight:600;">'+(po.reason||'--')+'</div></div>';
+    h+='<div><label>总金额</label><div style="font-size:18px;font-weight:900;color:#2563eb;">¥'+(po.totalAmount||0)+'</div></div>';
+    h+='<div><label>状态</label><div style="font-size:14px;font-weight:700;">'+stTxt+'</div></div>';
+    h+='<div><label>申请时间</label><div style="font-size:14px;">'+(po.createTime||'--')+'</div></div>';
+    h+='</div>';
+    if(items.length>0){
+      h+='<label>物料明细</label><table class="detail-table"><thead><tr><th>物料名称</th><th>规格</th><th>数量</th><th>单价</th><th>小计</th></tr></thead><tbody>';
+      for(var i=0;i<items.length;i++){var it=items[i];h+='<tr><td>'+(it.materialName||'')+'</td><td>'+(it.spec||'')+'</td><td>'+(it.quantity||0)+'</td><td>¥'+(it.unitPrice||0)+'</td><td>¥'+(it.subtotal||0)+'</td></tr>';}
+      h+='</tbody></table>';
+    }
+    // 审批记录
+    if(detail.approvals&&detail.approvals.length>0){
+      h+='<label style="margin-top:16px;">审批记录</label>';
+      for(var j=0;j<detail.approvals.length;j++){var a=detail.approvals[j];h+='<div style="padding:8px 12px;background:#f8fafc;border-radius:8px;margin-bottom:4px;font-size:13px;"><span style="font-weight:700;">'+(a.stepName||'')+'</span> — '+(a.approverName||'')+' <span style="color:'+(a.action==='APPROVE'?'#059669':'#ef4444')+';">'+(a.action==='APPROVE'?'✅通过':'❌驳回')+'</span> <span style="color:#94a3b8;font-size:11px;">'+(a.createTime||'')+'</span></div>';}
+    }
+    h+='<div class="btn-row"><button class="btn-cancel" onclick="closeModal(\'detailModal\')">关闭</button></div>';
+    document.getElementById('detailContent').innerHTML=h;
+    document.getElementById('detailModal').classList.remove('hidden');
+  }).catch(function(){alert('加载详情失败');});
+}
+
+function addItemRow(){
+  document.getElementById('poItems').innerHTML+='<div class="item-row"><input placeholder="物料名称"><input placeholder="规格"><input class="qty" placeholder="数量" type="number" step="0.1"><input class="price" placeholder="单价" type="number" step="0.01"><button onclick="this.parentElement.remove()">x</button></div>';
+}
+
+function doCreate(){
+  var rows=document.querySelectorAll('#poItems .item-row');
+  var items=[],total=0;
+  for(var i=0;i<rows.length;i++){
+    var ins=rows[i].querySelectorAll('input');
+    var name=ins[0].value.trim(),spec=ins[1].value.trim();
+    var qty=parseFloat(ins[2].value)||0,price=parseFloat(ins[3].value)||0;
+    if(name&&qty>0){items.push({materialName:name,spec:spec,quantity:qty,unitPrice:price,subtotal:qty*price});total+=qty*price;}
+  }
+  if(!items.length){alert('请至少填写一项物料');return;}
+  var body={po:{poNo:'PR-'+new Date().toISOString().slice(0,10).replace(/-/g,'')+'-'+Math.floor(Math.random()*900+100),applicantId:1,department:document.getElementById('poDept').value||'第一食堂',summary:items.map(function(i){return i.materialName+'('+i.quantity+')';}).join(', '),totalAmount:total,expectedDate:document.getElementById('poDate').value||'',reason:document.getElementById('poReason').value||'',status:'PENDING_MANAGER'},items:items};
+  fetch(API_BASE+'/purchases',{method:'POST',headers:getAuthHeaders(),body:JSON.stringify(body)})
+  .then(function(r){return r.json();})
+  .then(function(r){if(r.code===200){alert('采购申请已提交');closeModal('createModal');loadPurchases('');}else alert(r.message||'提交失败');})
+  .catch(function(){alert('提交失败');});
+}
+
+function doApprove(id){
+  if(!confirm('确定通过此采购申请？'))return;
+  fetch(API_BASE+'/purchases/'+id+'/approve?stepName=审批&approverName='+encodeURIComponent(userName),{method:'POST',headers:getAuthHeaders()})
+  .then(function(r){return r.json();})
+  .then(function(r){if(r.code===200){alert('已通过');loadPurchases('');}else alert(r.message||'操作失败');})
+  .catch(function(){alert('操作失败');});
+}
+
+function doReject(id){
+  var reason=prompt('驳回原因（可选）：');
+  fetch(API_BASE+'/purchases/'+id+'/reject?stepName=审批&approverName='+encodeURIComponent(userName)+'&comment='+encodeURIComponent(reason||''),{method:'POST',headers:getAuthHeaders()})
+  .then(function(r){return r.json();})
+  .then(function(r){if(r.code===200){alert('已驳回');loadPurchases('');}else alert(r.message||'操作失败');})
+  .catch(function(){alert('操作失败');});
+}
+
+function doCancel(id){
+  if(!confirm('确定撤回此采购申请？'))return;
+  fetch(API_BASE+'/purchases/'+id+'/reject?stepName=撤回&approverName='+encodeURIComponent(userName),{method:'POST',headers:getAuthHeaders()})
+  .then(function(r){return r.json();})
+  .then(function(r){if(r.code===200){alert('已撤回');loadPurchases('');}else alert(r.message||'撤回失败');})
+  .catch(function(){alert('撤回失败');});
+}
+
+function closeModal(id){document.getElementById(id).classList.add('hidden');}
+function openCreate(){document.getElementById('createModal').classList.remove('hidden');}
+
+(function init(){
+  var st=document.getElementById('sidebarTitle');
+  var ca=document.getElementById('createBtnArea');
+  if(role==='SUPERVISOR'){
+    if(st)st.textContent='后勤处 · 监管端';
+    if(ca)ca.innerHTML='<span class="text-sm text-slate-400">审批模式</span>';
+  }else if(role==='CANTEEN_MANAGER'){
+    if(st)st.textContent='第一食堂 · 管理端';
+    if(ca)ca.innerHTML='<button class="px-4 py-2 bg-blue-600 text-white rounded-xl text-sm font-bold flex items-center gap-2 shadow-lg shadow-blue-100" onclick="openCreate()"><iconify-icon icon="mdi:plus"></iconify-icon>新建采购申请</button>';
+  }else if(role==='SUPER_ADMIN'){
+    if(st)st.textContent='超级管理 · 系统端';
+    if(ca)ca.innerHTML='<button class="px-4 py-2 bg-blue-600 text-white rounded-xl text-sm font-bold flex items-center gap-2 shadow-lg shadow-blue-100" onclick="openCreate()"><iconify-icon icon="mdi:plus"></iconify-icon>新建采购申请</button>';
+  }
+  loadPurchases('');
+})();
+</script>
+</body>
+</html>

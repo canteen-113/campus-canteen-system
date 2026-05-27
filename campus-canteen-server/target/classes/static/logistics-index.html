@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>监管工作台 - 后勤监管端</title>
+<script src="https://modao.cc/agent-py/static/source/js/tailwindcss.js"></script>
+<script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.js"></script>
+</head>
+<body class="bg-slate-50 min-h-screen flex text-slate-800">
+<!-- 侧边栏 (监管版) -->
+<aside class="w-64 bg-slate-900 text-slate-300 flex flex-col shrink-0">
+<div class="p-6 flex items-center gap-3">
+<div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
+<iconify-icon class="text-white text-xl" icon="mdi:shield-check"></iconify-icon>
+</div>
+<span class="text-white font-bold tracking-tight">智慧食堂 · 监管端</span>
+</div>
+<nav class="flex-1 px-4 py-4 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 bg-indigo-600 text-white rounded-xl shadow-lg shadow-indigo-600/20" href="logistics-index.html">
+<iconify-icon class="text-xl" icon="mdi:view-grid"></iconify-icon>
+<span class="text-sm font-medium">监管工作台</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="logistics-analysis.html">
+<iconify-icon class="text-xl" icon="mdi:chart-box"></iconify-icon>
+<span class="text-sm font-medium">统计分析</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="logistics-data.html">
+<iconify-icon class="text-xl" icon="mdi:database"></iconify-icon>
+<span class="text-sm font-medium">数据中心</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="logistics-finance.html">
+<iconify-icon class="text-xl" icon="mdi:finance"></iconify-icon>
+<span class="text-sm font-medium">财务管理</span>
+</a>
+<div class="border-t border-slate-800 my-4 mx-4"></div>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="logistics-system.html">
+<iconify-icon class="text-xl" icon="mdi:cog-outline"></iconify-icon>
+<span class="text-sm font-medium">系统管理</span>
+</a>
+</nav>
+</aside>
+<main class="flex-1 flex flex-col min-w-0">
+<header class="h-16 bg-white border-b border-slate-200 px-8 flex items-center justify-between">
+<h2 class="text-lg font-bold">全校食堂运行状态监控</h2>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 px-3 py-1 bg-emerald-50 text-emerald-600 rounded-full text-xs font-bold">
+<span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span> 全系统运行正常
+                 </div>
+<span class="text-slate-400 text-sm italic">Last sync: 14:35:12</span>
+</div>
+</header>
+<div class="flex-1 overflow-y-auto p-8 space-y-8">
+<!-- 运行总览卡片 -->
+<div class="grid grid-cols-4 gap-6">
+<div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">今日总餐次</p>
+<h3 class="text-2xl font-black">24,582 <span class="text-xs font-medium text-slate-400">份</span></h3>
+<div class="mt-4 flex items-center justify-between text-xs">
+<span class="text-slate-500">第一食堂</span>
+<span class="font-bold">12,408</span>
+</div>
+</div>
+<div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">活跃就餐人数</p>
+<h3 class="text-2xl font-black">18,204 <span class="text-xs font-medium text-slate-400">人</span></h3>
+<div class="mt-4 flex items-center justify-between text-xs">
+<span class="text-slate-500">教工占比</span>
+<span class="font-bold">12.5%</span>
+</div>
+</div>
+<div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm border-l-4 border-l-orange-500">
+<p class="text-[10px] font-bold text-orange-500 uppercase tracking-widest mb-1">待办督办事项</p>
+<h3 class="text-2xl font-black text-orange-600">8 <span class="text-xs font-medium text-slate-400">件</span></h3>
+<div class="mt-4 flex items-center justify-between text-xs">
+<span class="text-orange-600">高优处理</span>
+<span class="font-black">2</span>
+</div>
+</div>
+<div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">实时投诉率</p>
+<h3 class="text-2xl font-black text-emerald-600">0.02%</h3>
+<div class="mt-4 flex items-center justify-between text-xs">
+<span class="text-slate-500">好评率</span>
+<span class="font-bold text-emerald-600">99.8%</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-8">
+<!-- 食堂状态列表 -->
+<div class="col-span-2 space-y-4">
+<h3 class="font-bold flex items-center gap-2 px-2">
+<iconify-icon class="text-indigo-600" icon="mdi:office-building"></iconify-icon>各食堂实时状态
+                    </h3>
+<div class="grid grid-cols-1 gap-4">
+<div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex items-center justify-between group hover:border-indigo-600 transition-all">
+<div class="flex items-center gap-6">
+<div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center">
+<iconify-icon class="text-3xl" icon="mdi:silverware"></iconify-icon>
+</div>
+<div>
+<h4 class="text-lg font-black">第一食堂</h4>
+<p class="text-sm text-slate-400">当前负载: 85% · 留样已完成 · 卫生检查合格</p>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="text-center">
+<p class="text-[10px] text-slate-400 font-bold uppercase">Revenue</p>
+<p class="font-bold">¥ 4.2k</p>
+</div>
+<button class="px-6 py-2 bg-indigo-50 text-indigo-600 rounded-xl text-xs font-bold group-hover:bg-indigo-600 group-hover:text-white transition-all">调取监控</button>
+</div>
+</div>
+<div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex items-center justify-between group hover:border-indigo-600 transition-all">
+<div class="flex items-center gap-6">
+<div class="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center">
+<iconify-icon class="text-3xl" icon="mdi:silverware"></iconify-icon>
+</div>
+<div>
+<h4 class="text-lg font-black">教工餐厅</h4>
+<p class="text-sm text-slate-400">当前负载: 32% · 满意度极高 · 供应链正常</p>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="text-center">
+<p class="text-[10px] text-slate-400 font-bold uppercase">Revenue</p>
+<p class="font-bold">¥ 2.1k</p>
+</div>
+<button class="px-6 py-2 bg-indigo-50 text-indigo-600 rounded-xl text-xs font-bold group-hover:bg-indigo-600 group-hover:text-white transition-all">调取监控</button>
+</div>
+</div>
+</div>
+</div>
+<!-- 通知与督办 -->
+<div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm flex flex-col">
+<h3 class="font-bold mb-6 flex items-center gap-2">
+<iconify-icon class="text-orange-500" icon="mdi:alert-circle-outline"></iconify-icon>紧急督办事项
+                    </h3>
+<div class="flex-1 space-y-4">
+<div class="p-4 bg-rose-50 border border-rose-100 rounded-2xl">
+<div class="flex justify-between mb-2">
+<span class="text-[10px] font-black bg-rose-600 text-white px-1.5 py-0.5 rounded">高优先级</span>
+<span class="text-[10px] text-slate-400">10:24 AM</span>
+</div>
+<p class="text-sm font-bold text-rose-900">第二食堂冰柜温度异常</p>
+<p class="text-[11px] text-rose-700 mt-1 italic">传感器检测到肉类冷库温度上升至 8℃，可能影响食材安全。</p>
+<div class="mt-3 flex gap-2">
+<button class="flex-1 py-1.5 bg-rose-600 text-white text-[10px] font-bold rounded-lg shadow-md shadow-rose-200">联系店长</button>
+<button class="flex-1 py-1.5 bg-white border border-rose-200 text-rose-600 text-[10px] font-bold rounded-lg">标记处理</button>
+</div>
+</div>
+<div class="p-4 bg-slate-50 border border-slate-100 rounded-2xl">
+<div class="flex justify-between mb-2">
+<span class="text-[10px] font-black bg-slate-200 text-slate-500 px-1.5 py-0.5 rounded">常规督办</span>
+<span class="text-[10px] text-slate-400">09:12 AM</span>
+</div>
+<p class="text-sm font-bold text-slate-800">一食堂窗口评价下滑通报</p>
+<p class="text-[11px] text-slate-500 mt-1">昨日服务态度评分下降 0.3%，需负责人提交原因分析。</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<script src="api-helper.js"></script>
+<script>
+(function(){
+  var user = API.getUser();
+
+  // Add version footer to sidebar
+  var aside = document.querySelector('aside');
+  if(aside) {
+    var footer = document.createElement('div');
+    footer.className = 'border-t border-slate-800 mt-auto p-3';
+    footer.innerHTML = '<div class="text-xs text-slate-500 text-center">v3.5</div>';
+    aside.appendChild(footer);
+  }
+
+  // Dashboard data
+  API.get('/dashboard/logistics').then(function(d) {
+    if(!d) return;
+    var cards = document.querySelectorAll('.grid.grid-cols-4.gap-6 > div');
+    if(cards[0]) cards[0].querySelector('h3').innerHTML = (d.todayOrders || 0).toLocaleString() + ' <span class="text-xs font-medium text-slate-400">份</span>';
+    if(cards[1]) cards[1].querySelector('h3').innerHTML = Math.floor((d.todayOrders || 0) * 0.74).toLocaleString() + ' <span class="text-xs font-medium text-slate-400">人</span>';
+    if(cards[2]) cards[2].querySelector('h3').innerHTML = '<span class="text-orange-600">' + (d.pendingApprovals || 0) + '</span> <span class="text-xs font-medium text-slate-400">件</span>';
+    if(cards[3]) cards[3].querySelector('h3').innerHTML = '<span class="text-emerald-600">' + (d.stockAlerts || 0) + '</span> <span class="text-xs font-medium text-slate-400">条预警</span>';
+
+    // Revenue in canteen cards
+    if(d.todayRevenue) {
+      var revs = document.querySelectorAll('.text-center .font-bold');
+      if(revs[0]) revs[0].textContent = '¥ ' + (d.todayRevenue / 2).toFixed(1) + 'k';
+      if(revs[1]) revs[1].textContent = '¥ ' + (d.todayRevenue / 5).toFixed(1) + 'k';
+    }
+
+    // Sync timestamp
+    var now = new Date();
+    var ts = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0') + ':' + now.getSeconds().toString().padStart(2, '0');
+    var syncEl = document.querySelector('header .text-sm.italic');
+    if(syncEl) syncEl.textContent = 'Last sync: ' + ts;
+
+    // Status indicator
+    if(d.stockAlerts > 0) {
+      var statusEl = document.querySelector('.bg-emerald-50');
+      if(statusEl) {
+        statusEl.className = 'flex items-center gap-2 px-3 py-1 bg-amber-50 text-amber-600 rounded-full text-xs font-bold';
+        statusEl.innerHTML = '<span class="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></span> ' + d.stockAlerts + ' 条预警';
+      }
+    }
+  });
+
+  // Stock alerts
+  API.get('/stock/alerts').then(function(alerts) {
+    if(!alerts || !alerts.length) return;
+    var panel = document.querySelector('.bg-white.p-8.rounded-3xl.border.border-slate-200.shadow-sm.flex.flex-col');
+    if(!panel) return;
+    var list = panel.querySelector('.flex-1.space-y-4');
+    if(!list) return;
+    list.innerHTML = '';
+    for(var i = 0; i < Math.min(alerts.length, 5); i++) {
+      var a = alerts[i];
+      var urg = a.currentStock <= a.alertThreshold;
+      var bgCls = urg ? 'bg-rose-50 border border-rose-100' : 'bg-amber-50 border border-amber-100';
+      var badgeCls = urg ? 'bg-rose-600 text-white' : 'bg-amber-600 text-white';
+      var badgeText = urg ? '库存预警' : '库存偏低';
+      var titleCls = urg ? 'text-rose-900' : 'text-amber-900';
+      var btnCls = urg ? 'bg-rose-600 text-white' : 'bg-amber-600 text-white';
+      var div = document.createElement('div');
+      div.className = 'p-4 ' + bgCls + ' rounded-2xl';
+      div.innerHTML =
+        '<div class="flex justify-between mb-2">' +
+        '<span class="text-[10px] font-black ' + badgeCls + ' px-1.5 py-0.5 rounded">' + badgeText + '</span>' +
+        '<span class="text-[10px] text-slate-400">库存:' + a.currentStock + '</span></div>' +
+        '<p class="text-sm font-bold ' + titleCls + '">' + a.name + '</p>' +
+        '<p class="text-[11px] text-slate-500 mt-1 italic">当前库存 ' + a.currentStock + '，阈值 ' + a.alertThreshold + '</p>' +
+        '<div class="mt-3 flex gap-2">' +
+        '<button class="flex-1 py-1.5 ' + btnCls + ' text-[10px] font-bold rounded-lg alert-contact-btn">联系店长</button>' +
+        '<button class="flex-1 py-1.5 bg-white border border-slate-200 text-slate-600 text-[10px] font-bold rounded-lg alert-mark-btn">标记处理</button></div>';
+      list.appendChild(div);
+    }
+    // Bind events after rendering
+    var contactBtns = list.querySelectorAll('.alert-contact-btn');
+    for(var j = 0; j < contactBtns.length; j++) {
+      contactBtns[j].addEventListener('click', function(){ alert('已通知相关店长处理库存预警。'); });
+    }
+    var markBtns = list.querySelectorAll('.alert-mark-btn');
+    for(var k = 0; k < markBtns.length; k++) {
+      markBtns[k].addEventListener('click', function(){ alert('已标记为处理中。'); });
+    }
+  });
+
+  // Monitor and existing buttons
+  var allBtns = document.querySelectorAll('button');
+  for(var bi = 0; bi < allBtns.length; bi++) {
+    var b = allBtns[bi];
+    var txt = b.textContent.trim();
+    if(txt === '调取监控') {
+      b.addEventListener('click', function(){ alert('监控画面调取中，请稍候...'); });
+    } else if(txt === '联系店长') {
+      b.addEventListener('click', function(){ alert('已通知相关店长。'); });
+    } else if(txt === '标记处理') {
+      b.addEventListener('click', function(){ alert('已标记为处理中。'); });
+    }
+  }
+})();
+</script>
+</body>
+</html>

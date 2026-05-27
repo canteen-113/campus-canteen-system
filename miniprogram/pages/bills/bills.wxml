@@ -1,0 +1,42 @@
+<view class="page-bills">
+  <!-- 资产概览头部 -->
+  <view class="bills-header">
+    <text class="bills-label">Card Balance</text>
+    <view class="flex-row">
+      <text class="bills-currency">¥</text>
+      <text class="bills-amount">{{balance}}</text>
+    </view>
+    <view class="header-btns">
+      <button class="header-btn header-btn-primary" bindtap="recharge">充值余额</button>
+      <button class="header-btn header-btn-dark">一卡通挂失</button>
+    </view>
+  </view>
+
+  <scroll-view class="bills-content" scroll-y>
+    <view class="flex-between mb-4">
+      <text class="section-title">近期交易流水</text>
+      <text class="text-xs text-slate-400">{{currentMonth}} 📅</text>
+    </view>
+
+    <block wx:for="{{groupedTransactions}}" wx:key="date">
+      <text class="date-label">{{item.date}}</text>
+      <view class="tx-list">
+        <view class="tx-item" wx:for="{{item.list}}" wx:key="id" wx:for-item="tx">
+          <view class="tx-icon tx-icon-{{tx.isIncome ? 'income' : 'expense'}}">
+            <text>{{tx.isIncome ? '💰' : '🍴'}}</text>
+          </view>
+          <view class="flex-1">
+            <text class="tx-title">{{tx.description}}</text>
+            <text class="tx-meta">{{tx.time}} · {{tx.source}}</text>
+          </view>
+          <text class="tx-amount {{tx.isIncome ? 'tx-income' : 'tx-expense'}}">{{tx.isIncome ? '+' : '-'}} ¥ {{tx.absAmount}}</text>
+        </view>
+      </view>
+    </block>
+
+    <view wx:if="{{groupedTransactions.length === 0}}" class="empty-text">暂无交易记录</view>
+
+    <button class="export-btn">📤 导出 PDF 电子账单</button>
+    <view style="height:40rpx;"></view>
+  </scroll-view>
+</view>

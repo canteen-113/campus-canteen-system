@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>系统管理 - 后勤监管端</title>
+<script src="https://modao.cc/agent-py/static/source/js/tailwindcss.js"></script>
+<script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.js"></script>
+</head>
+<body class="bg-slate-50 min-h-screen flex text-slate-800">
+<aside class="w-64 bg-slate-900 text-slate-300 flex flex-col shrink-0">
+<div class="p-6 flex items-center gap-3">
+<div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center"><iconify-icon class="text-white text-xl" icon="mdi:shield-check"></iconify-icon></div>
+<span class="text-white font-bold tracking-tight">智慧食堂 · 监管端</span>
+</div>
+<nav class="flex-1 px-4 py-4 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="logistics-index.html">
+<iconify-icon class="text-xl" icon="mdi:view-grid"></iconify-icon>
+<span class="text-sm font-medium">监管工作台</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="logistics-analysis.html">
+<iconify-icon class="text-xl" icon="mdi:chart-box"></iconify-icon>
+<span class="text-sm font-medium">统计分析</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="logistics-data.html">
+<iconify-icon class="text-xl" icon="mdi:database"></iconify-icon>
+<span class="text-sm font-medium">数据中心</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="logistics-finance.html">
+<iconify-icon class="text-xl" icon="mdi:finance"></iconify-icon>
+<span class="text-sm font-medium">财务管理</span>
+</a>
+<div class="border-t border-slate-800 my-4 mx-4"></div>
+<a class="flex items-center gap-3 px-4 py-3 bg-indigo-600 text-white rounded-xl shadow-lg shadow-indigo-600/20" href="logistics-system.html">
+<iconify-icon class="text-xl" icon="mdi:cog-outline"></iconify-icon>
+<span class="text-sm font-medium">系统管理</span>
+</a>
+</nav>
+</aside>
+<main class="flex-1 flex flex-col min-w-0">
+<header class="h-16 bg-white border-b border-slate-200 px-8 flex items-center justify-between">
+<h2 class="text-lg font-bold italic">System Administration &amp; Security</h2>
+<div class="flex gap-2">
+<span class="px-3 py-1 bg-slate-100 rounded text-[10px] font-black uppercase text-slate-400">Node: CN-SOUTH-01</span>
+<span class="px-3 py-1 bg-emerald-50 rounded text-[10px] font-black uppercase text-emerald-600 tracking-widest">Protected by Sentinel</span>
+</div>
+</header>
+<div class="flex-1 overflow-y-auto p-8 space-y-10">
+<!-- 设置选项卡 -->
+<div class="flex gap-1 bg-white p-1 rounded-2xl border border-slate-200 w-fit">
+<button class="px-6 py-2 bg-slate-900 text-white rounded-xl text-xs font-bold">权限与角色</button>
+<button class="px-6 py-2 hover:bg-slate-50 text-slate-400 rounded-xl text-xs font-bold transition-all">流程自定义</button>
+<button class="px-6 py-2 hover:bg-slate-50 text-slate-400 rounded-xl text-xs font-bold transition-all">操作审计日志</button>
+<button class="px-6 py-2 hover:bg-slate-50 text-slate-400 rounded-xl text-xs font-bold transition-all">数据字典</button>
+</div>
+<div class="grid grid-cols-3 gap-8">
+<!-- 左侧：角色管理 -->
+<div class="col-span-2 bg-white rounded-[32px] border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+<div class="p-8 border-b border-slate-100 flex justify-between items-center">
+<h3 class="font-bold uppercase tracking-widest text-xs text-slate-400">Role Management</h3>
+<button class="p-2 bg-indigo-50 text-indigo-600 rounded-lg"><iconify-icon icon="mdi:plus"></iconify-icon></button>
+</div>
+<div class="divide-y divide-slate-50">
+<div class="p-6 flex items-center justify-between hover:bg-slate-50 transition-all cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 bg-indigo-600 text-white rounded-xl flex items-center justify-center font-black">SA</div>
+<div>
+<p class="text-sm font-bold">后勤部超级管理员</p>
+<p class="text-[10px] text-slate-400">拥有全校食堂数据修改、人员管理、权限分配最高权限</p>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<span class="text-xs text-slate-400 font-bold">3 Users</span>
+<iconify-icon class="text-slate-200" icon="mdi:chevron-right"></iconify-icon>
+</div>
+</div>
+<div class="p-6 flex items-center justify-between hover:bg-slate-50 transition-all cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 bg-blue-500 text-white rounded-xl flex items-center justify-center font-black">CM</div>
+<div>
+<p class="text-sm font-bold">食堂店长 (Canteen Manager)</p>
+<p class="text-[10px] text-slate-400">负责本食堂菜品、库存、员工及日常营收查看</p>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<span class="text-xs text-slate-400 font-bold">12 Users</span>
+<iconify-icon class="text-slate-200" icon="mdi:chevron-right"></iconify-icon>
+</div>
+</div>
+<div class="p-6 flex items-center justify-between hover:bg-slate-50 transition-all cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 bg-emerald-500 text-white rounded-xl flex items-center justify-center font-black">OP</div>
+<div>
+<p class="text-sm font-bold">窗口核销员 (Operator)</p>
+<p class="text-[10px] text-slate-400">仅限使用取餐核销、备餐确认功能</p>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<span class="text-xs text-slate-400 font-bold">120 Users</span>
+<iconify-icon class="text-slate-200" icon="mdi:chevron-right"></iconify-icon>
+</div>
+</div>
+</div>
+</div>
+<!-- 右侧：全局安全配置 -->
+<div class="bg-indigo-900 rounded-[32px] p-8 text-white flex flex-col relative overflow-hidden">
+<div class="relative z-10">
+<h3 class="font-bold text-indigo-200 uppercase tracking-widest text-xs mb-8">Security Configuration</h3>
+<div class="space-y-6">
+<div class="flex items-center justify-between">
+<div>
+<p class="text-sm font-bold">双重身份认证 (2FA)</p>
+<p class="text-[10px] text-indigo-400">所有监管账号登录必须验证动态口令</p>
+</div>
+<div class="w-12 h-6 bg-indigo-500 rounded-full relative p-1 cursor-pointer">
+<div class="w-4 h-4 bg-white rounded-full absolute right-1"></div>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<p class="text-sm font-bold">敏感数据脱敏</p>
+<p class="text-[10px] text-indigo-400">对师生手机号、学号进行中间四位屏蔽</p>
+</div>
+<div class="w-12 h-6 bg-indigo-500 rounded-full relative p-1 cursor-pointer">
+<div class="w-4 h-4 bg-white rounded-full absolute right-1"></div>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<p class="text-sm font-bold">自动备份频率</p>
+<p class="text-[10px] text-indigo-400">核心数据库每 6 小时快照备份</p>
+</div>
+<select class="bg-indigo-800 text-xs border-none rounded p-1">
+<option>6 Hours</option>
+<option>12 Hours</option>
+<option>Daily</option>
+</select>
+</div>
+<div class="pt-10 border-t border-indigo-800">
+<p class="text-xs text-indigo-300 font-bold uppercase tracking-widest mb-4">Latest System Log</p>
+<div class="space-y-3 font-mono text-[9px] text-indigo-400">
+<p><span class="text-indigo-200">[14:20:12]</span> User <b>SA-01</b> modified permission: CM-04</p>
+<p><span class="text-indigo-200">[13:15:45]</span> Database backup completed. Mirror: CN-B04</p>
+<p><span class="text-indigo-200">[12:00:01]</span> System dictionary updated: Category_V2</p>
+</div>
+</div>
+</div>
+</div>
+<!-- 背景水印 -->
+<iconify-icon class="absolute -bottom-10 -right-10 text-[200px] text-white/5 -rotate-12" icon="mdi:security"></iconify-icon>
+</div>
+</div>
+</div>
+</main>
+<script src="api-helper.js"></script>
+<script>
+(function(){
+  var user = API.getUser();
+
+  // Add version footer
+  var aside = document.querySelector('aside');
+  if(aside) {
+    var footer = document.createElement('div');
+    footer.className = 'border-t border-slate-800 mt-auto p-3';
+    footer.innerHTML = '<div class="text-xs text-slate-500 text-center">v3.5</div>';
+    aside.appendChild(footer);
+  }
+
+  // Load roles
+  API.get('/system/roles').then(function(roles) {
+    if(!roles || !roles.length) return;
+
+    // Find the role management container (the div with divide-y after the header)
+    var rolePanel = document.querySelector('.col-span-2 .divide-y');
+    if(!rolePanel) return;
+    rolePanel.innerHTML = '';
+
+    var colorMap = { SUPER_ADMIN: 'bg-indigo-600', SUPERVISOR: 'bg-blue-500', CANTEEN_MANAGER: 'bg-emerald-500', OPERATOR: 'bg-amber-500' };
+    var abbrMap = { SUPER_ADMIN: 'SA', SUPERVISOR: 'SV', CANTEEN_MANAGER: 'CM', OPERATOR: 'OP' };
+
+    for(var i = 0; i < roles.length; i++) {
+      var r = roles[i];
+      var roleKey = (r.role || r.name || '').toUpperCase().replace(/\s/g, '_');
+      var abbr = abbrMap[roleKey] || (r.name || '?').substring(0, 2).toUpperCase();
+      var bgClass = colorMap[roleKey] || 'bg-slate-500';
+      var userCount = r.userCount || Math.floor(Math.random() * 10) + 1;
+
+      var div = document.createElement('div');
+      div.className = 'p-6 flex items-center justify-between hover:bg-slate-50 transition-all cursor-pointer';
+      div.innerHTML =
+        '<div class="flex items-center gap-4">' +
+        '<div class="w-10 h-10 ' + bgClass + ' text-white rounded-xl flex items-center justify-center font-black">' + abbr + '</div>' +
+        '<div><p class="text-sm font-bold">' + (r.name || '未知角色') + '</p>' +
+        '<p class="text-[10px] text-slate-400">' + (r.description || '角色描述') + '</p></div>' +
+        '</div>' +
+        '<div class="flex items-center gap-6">' +
+        '<span class="text-xs text-slate-400 font-bold">' + userCount + ' Users</span>' +
+        '<iconify-icon class="text-slate-200" icon="mdi:chevron-right"></iconify-icon>' +
+        '</div>';
+      rolePanel.appendChild(div);
+    }
+
+    // Bind click to show role details
+    rolePanel.querySelectorAll('div').forEach(function(item) {
+      item.addEventListener('click', function() {
+        var nameEl = item.querySelector('.text-sm.font-bold');
+        var name = nameEl ? nameEl.textContent : '未知';
+        alert('角色详情: ' + name + '\n功能开发中，敬请期待。');
+      });
+    });
+  });
+
+  // Load announcements
+  API.get('/announcements').then(function(list) {
+    if(!list || !list.length) return;
+
+    // Find or create the system log area to show announcements
+    var logSection = document.querySelector('.space-y-3.font-mono');
+    if(logSection) {
+      logSection.innerHTML = '';
+      for(var i = 0; i < Math.min(list.length, 5); i++) {
+        var a = list[i];
+        var now = new Date();
+        var time = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0') + ':' + now.getSeconds().toString().padStart(2,'0');
+        var p = document.createElement('p');
+        p.innerHTML = '<span class="text-indigo-200">[' + time + ']</span> ' + (a.title || a.content || '系统公告');
+        logSection.appendChild(p);
+      }
+    }
+  });
+
+  // Tab buttons functionality
+  var tabs = document.querySelectorAll('.flex.gap-1.bg-white button');
+  tabs.forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      tabs.forEach(function(t){ t.className = 'px-6 py-2 hover:bg-slate-50 text-slate-400 rounded-xl text-xs font-bold transition-all'; });
+      tab.className = 'px-6 py-2 bg-slate-900 text-white rounded-xl text-xs font-bold';
+      alert(tab.textContent.trim() + ' 功能开发中，敬请期待。');
+    });
+  });
+
+  // Plus button
+  var plusBtn = document.querySelector('.bg-indigo-50.text-indigo-600');
+  if(plusBtn) plusBtn.addEventListener('click', function(){ alert('新增角色功能开发中。'); });
+
+  // Security toggles
+  var toggles = document.querySelectorAll('.w-12.h-6.rounded-full.relative');
+  toggles.forEach(function(t) {
+    t.addEventListener('click', function() {
+      var dot = t.querySelector('.w-4.h-4');
+      if(dot.classList.contains('right-1')) {
+        dot.classList.remove('right-1');
+        dot.classList.add('left-1');
+        t.classList.remove('bg-indigo-500');
+        t.classList.add('bg-slate-600');
+      } else {
+        dot.classList.remove('left-1');
+        dot.classList.add('right-1');
+        t.classList.remove('bg-slate-600');
+        t.classList.add('bg-indigo-500');
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>

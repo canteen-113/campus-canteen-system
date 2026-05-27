@@ -1,0 +1,91 @@
+.page-bills {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #ffffff;
+}
+
+.bills-header {
+  background: #0f172a;
+  color: #ffffff;
+  padding: 80rpx 48rpx 64rpx;
+  border-radius: 0 0 48rpx 48rpx;
+}
+
+.bills-label { font-size: 22rpx; color: #94a3b8; text-transform: uppercase; letter-spacing: 4rpx; }
+
+.bills-currency { font-size: 32rpx; color: #94a3b8; margin-right: 8rpx; }
+.bills-amount { font-size: 72rpx; font-weight: 900; }
+
+.header-btns {
+  display: flex;
+  gap: 24rpx;
+  margin-top: 48rpx;
+}
+
+.header-btn {
+  flex: 1;
+  padding: 24rpx;
+  border-radius: 24rpx;
+  font-size: 24rpx;
+  font-weight: 700;
+}
+
+.header-btn-primary { background: #2563eb; color: #ffffff; box-shadow: 0 8rpx 24rpx rgba(37,99,235,0.3); }
+.header-btn-dark { background: #1e293b; color: #ffffff; }
+
+.bills-content {
+  flex: 1;
+  padding: 32rpx;
+}
+
+.section-title { font-size: 30rpx; font-weight: 700; color: #1e293b; }
+
+.date-label { font-size: 20rpx; font-weight: 700; color: #cbd5e1; text-transform: uppercase; display: block; margin: 32rpx 0 16rpx; }
+
+.tx-list { display: flex; flex-direction: column; gap: 24rpx; }
+
+.tx-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.tx-icon {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36rpx;
+}
+
+.tx-icon-expense { background: #eff6ff; }
+.tx-icon-income { background: #ecfdf5; }
+
+.tx-title { font-size: 28rpx; font-weight: 700; color: #1e293b; }
+.tx-meta { font-size: 20rpx; color: #94a3b8; }
+
+.tx-amount { font-size: 28rpx; font-weight: 900; }
+.tx-expense { color: #1e293b; }
+.tx-income { color: #059669; }
+
+.empty-text { text-align: center; color: #94a3b8; font-size: 28rpx; padding-top: 120rpx; }
+
+.export-btn {
+  width: 100%;
+  margin-top: 80rpx;
+  padding: 32rpx;
+  background: #f8fafc;
+  color: #94a3b8;
+  font-size: 24rpx;
+  font-weight: 700;
+  border-radius: 24rpx;
+  border: 2rpx solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12rpx;
+}

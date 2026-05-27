@@ -1,0 +1,34 @@
+<view class="page-login">
+  <view class="login-header">
+    <view class="logo-box">
+      <text class="logo-icon">🍽️</text>
+    </view>
+    <text class="title">校园智慧食堂</text>
+    <text class="subtitle">微信小程序端 · 师生就餐服务</text>
+  </view>
+
+  <view class="login-form">
+    <view class="form-group">
+      <text class="form-label">学号 / 教工号</text>
+      <input class="input-field" placeholder="请输入您的账号" value="{{username}}" bindinput="onUsernameInput"/>
+    </view>
+
+    <view class="form-group">
+      <text class="form-label">登录密码</text>
+      <input class="input-field" placeholder="请输入密码" password value="{{password}}" bindinput="onPasswordInput"/>
+    </view>
+
+    <view class="form-extra">
+      <label class="remember-label">
+        <checkbox checked="{{remember}}" bindtap="toggleRemember"/>
+        <text class="text-xs text-slate-500">记住登录状态</text>
+      </label>
+    </view>
+
+    <button class="btn-primary login-btn" bindtap="doLogin" loading="{{loading}}">立即登录</button>
+  </view>
+
+  <view class="login-footer">
+    <text class="text-xs text-slate-400">校园智慧食堂管理系统 v3.5.0</text>
+  </view>
+</view>

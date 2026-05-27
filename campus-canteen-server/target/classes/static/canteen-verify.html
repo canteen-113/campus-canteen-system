@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>取餐核销 - 食堂管理端</title>
+<script src="https://modao.cc/agent-py/static/source/js/tailwindcss.js"></script>
+<script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.js"></script>
+</head>
+<body class="bg-slate-900 min-h-screen flex text-white overflow-hidden">
+<!-- 极简侧边导航 -->
+<aside class="w-20 bg-black/40 border-r border-white/5 flex flex-col items-center py-8 gap-8">
+<a class="w-12 h-12 bg-white/5 hover:bg-white/10 rounded-2xl flex items-center justify-center transition-all" href="canteen-index.html">
+<iconify-icon class="text-2xl text-slate-400" icon="mdi:home"></iconify-icon>
+</a>
+<div class="flex-1 flex flex-col gap-6">
+<button class="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-600/20">
+<iconify-icon class="text-2xl" icon="mdi:barcode-scan"></iconify-icon>
+</button>
+<button class="w-12 h-12 bg-white/5 hover:bg-white/10 rounded-2xl flex items-center justify-center transition-all">
+<iconify-icon class="text-2xl text-slate-400" icon="mdi:face-recognition"></iconify-icon>
+</button>
+<button class="w-12 h-12 bg-white/5 hover:bg-white/10 rounded-2xl flex items-center justify-center transition-all">
+<iconify-icon class="text-2xl text-slate-400" icon="mdi:keyboard-outline"></iconify-icon>
+</button>
+</div>
+</aside>
+<main class="flex-1 flex flex-col p-10 min-w-0 overflow-hidden">
+<div class="flex justify-between items-start mb-10">
+<div>
+<h2 class="text-4xl font-black mb-2">取餐核销终端</h2>
+<p class="text-slate-400">第一食堂 · 03 窗口 · 备餐员: 王大锤</p>
+</div>
+<div class="text-right">
+<p class="text-6xl font-black text-blue-500 tracking-tight" id="clock">12:05:32</p>
+<p class="text-slate-500 mt-1 uppercase tracking-widest text-xs font-bold">2026.04.30 THU</p>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-10 flex-1 min-h-0">
+<!-- 左侧：扫描与输入 -->
+<div class="flex flex-col gap-8">
+<div class="bg-white/5 border border-white/10 rounded-[40px] p-10 flex flex-col items-center justify-center text-center relative overflow-hidden group">
+<!-- 模拟摄像头区域 -->
+<div class="w-64 h-64 bg-slate-800 rounded-3xl border-2 border-dashed border-slate-600 flex flex-col items-center justify-center mb-8 relative">
+<iconify-icon class="text-6xl text-slate-600 mb-4" icon="mdi:qrcode-scan"></iconify-icon>
+<span class="text-xs text-slate-500">等待扫码...</span>
+<div class="absolute inset-0 border-2 border-blue-500/50 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity">
+<div class="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-blue-500 -m-0.5"></div>
+<div class="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-blue-500 -m-0.5"></div>
+<div class="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-blue-500 -m-0.5"></div>
+<div class="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-blue-500 -m-0.5"></div>
+</div>
+</div>
+<p class="text-xl font-bold mb-2">请对准扫码窗口</p>
+<p class="text-sm text-slate-500">支持师生端付款码、预约码、一卡通</p>
+</div>
+<div class="bg-white/5 border border-white/10 rounded-[40px] p-10 flex flex-col">
+<h3 class="text-sm font-bold text-slate-500 mb-6 uppercase tracking-widest">手动输入核销码</h3>
+<div class="flex gap-4">
+<input id="verifyCode" class="flex-1 bg-slate-800 border border-slate-700 rounded-2xl px-6 py-5 text-4xl font-black tracking-[0.5em] outline-none focus:border-blue-500 text-center" placeholder="0000" type="text"/>
+<button id="verifyBtn" class="px-10 bg-blue-600 hover:bg-blue-500 rounded-2xl font-bold text-xl transition-all shadow-xl shadow-blue-600/20 active:scale-95">核销</button>
+</div>
+</div>
+</div>
+<!-- 右侧：核销结果显示 -->
+<div id="verifyResult" class="bg-blue-600 rounded-[40px] p-12 flex flex-col relative overflow-hidden shadow-[0_0_80px_rgba(37,99,235,0.3)]" style="display:none">
+<div class="relative z-10 flex-1 flex flex-col">
+<div class="flex justify-between items-start mb-8">
+<span class="bg-white/20 px-4 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase">Verification Success</span>
+<iconify-icon class="text-7xl text-white drop-shadow-lg" icon="mdi:check-circle"></iconify-icon>
+</div>
+<div class="mb-10">
+<p class="text-blue-200 text-sm font-medium uppercase mb-2">Student Information</p>
+<h4 class="text-4xl font-black" id="verifyStudentName">张明伟</h4>
+<p class="text-blue-100 mt-2 text-lg" id="verifyStudentInfo">学号: 20261021 · 计算机学院</p>
+</div>
+<div class="space-y-6">
+<div class="p-6 bg-white/10 rounded-3xl border border-white/10">
+<p class="text-blue-200 text-xs font-bold uppercase mb-4 tracking-widest">Order Details</p>
+<div class="space-y-2" id="verifyOrderDishes">
+<div class="flex justify-between items-center text-xl font-bold">
+<span>秘制红烧牛腩套饭</span>
+<span>x 1</span>
+</div>
+<div class="flex justify-between items-center text-xl font-bold">
+<span>银耳雪梨汤</span>
+<span>x 1</span>
+</div>
+</div>
+</div>
+<div class="flex justify-between items-center">
+<div>
+<p class="text-blue-200 text-xs font-bold uppercase mb-1">Total Paid</p>
+<p class="text-3xl font-black" id="verifyTotal">¥ 14.00</p>
+</div>
+<div class="text-right">
+<p class="text-blue-200 text-xs font-bold uppercase mb-1">Balance</p>
+<p class="text-2xl font-bold opacity-70" id="verifyBalance">¥ 272.50</p>
+</div>
+</div>
+</div>
+</div>
+<!-- 背景水印 -->
+<iconify-icon class="absolute -bottom-10 -right-10 text-[300px] text-white/5 rotate-12" icon="mdi:food"></iconify-icon>
+</div>
+</div>
+<div class="mt-10 flex gap-10 items-center bg-white/5 px-8 py-4 rounded-3xl border border-white/10">
+<div class="flex items-center gap-4 border-r border-white/10 pr-10">
+<p class="text-xs text-slate-500 font-bold uppercase tracking-widest">今日核销</p>
+<p class="text-2xl font-black"><span id="todayVerifyCount">128</span> <span class="text-sm font-medium text-slate-400">份</span></p>
+</div>
+<div class="flex items-center gap-4 border-r border-white/10 pr-10">
+<p class="text-xs text-slate-500 font-bold uppercase tracking-widest">人脸识别率</p>
+<p class="text-2xl font-black">99.2%</p>
+</div>
+<div class="flex-1 flex gap-2 overflow-hidden items-center">
+<p class="text-xs text-slate-500 font-bold uppercase whitespace-nowrap">系统状态</p>
+<span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
+<p class="text-xs text-emerald-500 font-bold truncate">一卡通及支付接口已连接，IoT 扫码枪在线</p>
+</div>
+</div>
+</main>
+<script>
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('clock').innerText = now.toTimeString().split(' ')[0];
+        }, 1000);
+    </script>
+<script src="api-helper.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var verifyInput = document.getElementById('verifyCode');
+  var verifyBtn = document.getElementById('verifyBtn');
+  var resultPanel = document.getElementById('verifyResult');
+
+  function doVerify() {
+    var code = verifyInput.value.trim();
+    if (!code) {
+      alert('请输入核销码');
+      return;
+    }
+    API.post('/orders/verify?code=' + encodeURIComponent(code)).then(function (res) {
+      if (res.code === 200 && res.data) {
+        var d = res.data;
+        resultPanel.style.display = '';
+        document.getElementById('verifyStudentName').textContent = d.studentName || '';
+        document.getElementById('verifyStudentInfo').textContent =
+          '学号: ' + (d.studentNo || '') + (d.college ? ' · ' + d.college : '');
+
+        var dishesHtml = '';
+        if (d.dishes && d.dishes.length) {
+          d.dishes.forEach(function (dish) {
+            dishesHtml +=
+              '<div class="flex justify-between items-center text-xl font-bold">' +
+                '<span>' + dish.name + '</span>' +
+                '<span>x ' + dish.quantity + '</span>' +
+              '</div>';
+          });
+        }
+        document.getElementById('verifyOrderDishes').innerHTML = dishesHtml || '<div class="text-blue-200 text-sm">无菜品明细</div>';
+        document.getElementById('verifyTotal').textContent = '¥ ' + Number(d.total || 0).toFixed(2);
+        document.getElementById('verifyBalance').textContent = '¥ ' + Number(d.balance || 0).toFixed(2);
+
+        if (d.todayCount !== undefined) {
+          document.getElementById('todayVerifyCount').textContent = d.todayCount;
+        }
+
+        verifyInput.value = '';
+      } else {
+        alert(res.message || '核销失败');
+      }
+    }).catch(function (err) {
+      console.error('核销请求失败:', err);
+      alert('核销请求失败，请检查网络连接');
+    });
+  }
+
+  verifyBtn.addEventListener('click', doVerify);
+
+  verifyInput.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+      doVerify();
+    }
+  });
+});
+</script>
+</body>
+</html>

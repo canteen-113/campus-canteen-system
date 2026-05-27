@@ -1,0 +1,110 @@
+<view class="page-cart">
+  <view class="top-bar">
+    <text class="top-title">购物车</text>
+    <text class="top-sub">确认订单并预约取餐</text>
+  </view>
+
+  <scroll-view class="body" scroll-y enhanced show-scrollbar="{{false}}">
+    <!-- 购物车列表 -->
+    <view class="card" wx:if="{{cart.length > 0}}">
+      <view class="card-hd">
+        <text>🛒</text>
+        <text class="card-title">已选菜品</text>
+        <text class="card-count">{{cart.length}} 件</text>
+      </view>
+      <view class="cart-item" wx:for="{{cart}}" wx:key="id">
+        <image class="item-img" src="{{item.image}}" mode="aspectFill"/>
+        <view class="item-info">
+          <text class="item-name">{{item.name}}</text>
+          <text class="item-sub">{{item.canteenName || ''}} {{item.windowName || ''}}</text>
+          <view class="item-bottom">
+            <text class="item-price">¥{{item.price}}</text>
+            <!-- 数量调整 -->
+            <view class="qty-ctrl">
+              <view class="qty-btn" bindtap="onMinus" data-id="{{item.id}}">-</view>
+              <text class="qty-num">{{item.quantity || 1}}</text>
+              <view class="qty-btn" bindtap="onPlus" data-id="{{item.id}}">+</view>
+            </view>
+          </view>
+        </view>
+        <!-- 删除按钮 -->
+        <view class="del-btn" bindtap="onRemove" data-id="{{item.id}}">
+          <text style="font-size:36rpx;">✕</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空购物车 -->
+    <view class="empty-cart" wx:if="{{cart.length === 0}}">
+      <text style="font-size:100rpx;">🛒</text>
+      <text class="empty-title">购物车是空的</text>
+      <text class="empty-desc">去菜单页选几道美食吧</text>
+      <navigator url="/pages/menu/menu" class="go-menu-btn">去点餐</navigator>
+    </view>
+
+    <!-- 就餐时段 -->
+    <view class="card" wx:if="{{cart.length > 0}}">
+      <view class="card-hd">
+        <text>🕐</text>
+        <text class="card-title">就餐时段</text>
+      </view>
+      <view class="periods">
+        <view class="period {{selectedPeriod==='BREAKFAST'?'on':''}}" bindtap="selectPeriod" data-period="BREAKFAST">早餐</view>
+        <view class="period {{selectedPeriod==='LUNCH'?'on':''}}" bindtap="selectPeriod" data-period="LUNCH">午餐</view>
+        <view class="period {{selectedPeriod==='DINNER'?'on':''}}" bindtap="selectPeriod" data-period="DINNER">晚餐</view>
+      </view>
+      <view class="date-info">
+        <text class="text-xs" style="color:#94a3b8;">预约日期</text>
+        <text class="text-xs" style="font-weight:700;color:#1e293b;">{{reserveDate}}</text>
+      </view>
+    </view>
+
+    <!-- 金额明细 -->
+    <view class="card" wx:if="{{cart.length > 0}}">
+      <view class="card-hd">
+        <text>💰</text>
+        <text class="card-title">支付明细</text>
+      </view>
+      <view class="sum-row">
+        <text>商品总计</text>
+        <text>¥{{subtotal}}</text>
+      </view>
+      <view class="sum-row">
+        <text>预约押金</text>
+        <text>¥2.00</text>
+      </view>
+      <view class="sum-row" wx:if="{{discount > 0}}">
+        <text style="color:#059669;">学生卡优惠</text>
+        <text style="color:#059669;">-¥{{discount}}</text>
+      </view>
+      <view class="divider"></view>
+      <view class="sum-row sum-total">
+        <text>实付金额</text>
+        <text class="total-num">¥{{total}}</text>
+      </view>
+    </view>
+
+    <!-- 支付方式 -->
+    <view class="card" wx:if="{{cart.length > 0}}">
+      <view class="pay-row">
+        <text>💳</text>
+        <view class="flex-1" style="margin-left:16rpx;">
+          <text class="text-sm" style="font-weight:700;">一卡通支付</text>
+          <text class="text-xs" style="color:#94a3b8;">余额 ¥{{cardBalance}}</text>
+        </view>
+        <text style="color:#059669;">✅</text>
+      </view>
+    </view>
+
+    <view style="height:160rpx;"></view>
+  </scroll-view>
+
+  <!-- 底部提交 -->
+  <view class="bottom" wx:if="{{cart.length > 0}}">
+    <view class="flex-1">
+      <text class="text-xs" style="color:#94a3b8;">合计</text>
+      <text class="bottom-total">¥{{total}}</text>
+    </view>
+    <button class="submit-btn" bindtap="submitOrder">确认支付</button>
+  </view>
+</view>

@@ -1,0 +1,11 @@
+{
+  
+  "permissions": {
+    "allow": [
+      "Bash(rm \"c:/Users/19853/Desktop/xiaoyuan/campus-canteen-server/src/main/resources/static/student-\"*.html)"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\19853\\Desktop\\xiaoyuan\\campus-canteen-server\\src\\main\\resources\\static"
+    ]
+  }
+}

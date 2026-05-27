@@ -1,0 +1,49 @@
+{
+  "pages": [
+    "pages/login/login",
+    "pages/index/index",
+    "pages/menu/menu",
+    "pages/collect/collect",
+    "pages/orders/orders",
+    "pages/bills/bills",
+    "pages/reserve/reserve",
+    "pages/comment/comment",
+    "pages/orders/order.wxss"
+  ],
+  "window": {
+    "navigationBarTitleText": "校园智慧食堂",
+    "navigationBarBackgroundColor": "#2563eb",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f8fafc"
+  },
+  "tabBar": {
+    "color": "#94a3b8",
+    "selectedColor": "#2563eb",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/menu/menu",
+        "text": "订餐"
+      },
+      {
+        "pagePath": "pages/collect/collect",
+        "text": "取餐"
+      },
+      {
+        "pagePath": "pages/orders/orders",
+        "text": "订单"
+      },
+      {
+        "pagePath": "pages/bills/bills",
+        "text": "我的"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

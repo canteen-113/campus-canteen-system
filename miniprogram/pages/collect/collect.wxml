@@ -1,0 +1,58 @@
+<view class="page-collect">
+  <!-- 头部 -->
+  <view class="collect-header">
+    <text class="collect-title">扫码/人脸取餐</text>
+    <text class="collect-subtitle">请向窗口设备展示下方二维码</text>
+  </view>
+
+  <!-- 取餐卡片 -->
+  <view class="collect-card">
+    <view class="tab-switch">
+      <text class="switch-item switch-active">二维码取餐</text>
+      <text class="switch-item">人脸识别核验</text>
+    </view>
+
+    <!-- 取餐码展示 -->
+    <view class="qr-box">
+      <view class="qr-inner">
+        <text class="qr-code">#{{pickupCode}}</text>
+        <text class="qr-hint">扫码/输入取餐码</text>
+        <view class="scan-line"></view>
+      </view>
+    </view>
+
+    <text class="code-text">{{pickupCode}}</text>
+    <text class="code-label">Order Number</text>
+
+    <view class="divider-dashed"></view>
+
+    <view class="info-rows">
+      <view class="info-row">
+        <text class="info-label">取餐窗口</text>
+        <text class="info-value">{{pickupWindow}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">备餐状态</text>
+        <view class="flex-row">
+          <text class="info-pending">🍲 备餐中</text>
+        </view>
+      </view>
+      <view class="info-row">
+        <text class="info-label">预约时段</text>
+        <text class="info-value">{{pickupTime}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 人脸核验提示 -->
+  <view class="face-card">
+    <view class="face-icon">
+      <text>🤖</text>
+    </view>
+    <view class="flex-1">
+      <text class="face-title">已开启人脸核验</text>
+      <text class="face-desc">靠近取餐机即可自动识别扣款</text>
+    </view>
+    <text>➡️</text>
+  </view>
+</view>

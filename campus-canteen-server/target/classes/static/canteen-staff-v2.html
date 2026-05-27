@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>员工管理</title>
+<script src="https://modao.cc/agent-py/static/source/js/tailwindcss.js"></script>
+<script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.js"></script>
+<style>
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:999;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(2px)}
+.modal-overlay.hidden{display:none}
+.modal-box{background:#fff;border-radius:24px;width:520px;max-height:85vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.25);padding:28px}
+.modal-box h3{font-size:20px;font-weight:700;color:#1e293b;margin-bottom:20px}
+.modal-box label{display:block;font-size:12px;font-weight:700;color:#64748b;margin-bottom:6px;text-transform:uppercase}
+.modal-box input,.modal-box select{width:100%;padding:10px 14px;border:2px solid #e2e8f0;border-radius:12px;font-size:14px;outline:none;margin-bottom:14px;box-sizing:border-box}
+.modal-box input:focus,.modal-box select:focus{border-color:#2563eb}
+.frow{display:flex;gap:12px}.frow>*{flex:1}
+.btn-row{display:flex;justify-content:flex-end;gap:12px;margin-top:8px}
+.btn-cancel{background:#f1f5f9;color:#475569;border:none;padding:10px 24px;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer}
+.btn-save{background:#2563eb;color:#fff;border:none;padding:10px 24px;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 12px rgba(37,99,235,.2)}
+</style>
+</head>
+<body class="bg-slate-100 min-h-screen flex text-slate-800">
+<aside class="w-64 bg-slate-900 text-slate-300 flex flex-col shrink-0">
+<div class="p-6 flex items-center gap-3">
+<div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center"><iconify-icon class="text-white text-xl" icon="mdi:silverware-fork-knife"></iconify-icon></div>
+<span class="text-white font-bold tracking-tight" id="sidebarTitle">智慧食堂 · 管理端</span>
+</div>
+<nav class="flex-1 px-4 py-4 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="canteen-index.html"><iconify-icon class="text-xl" icon="mdi:view-dashboard"></iconify-icon><span class="text-sm font-medium">首页概览</span></a>
+<div class="text-xs font-semibold text-slate-500 uppercase px-4 py-3 mt-4">业务管理</div>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="canteen-dishes.html"><iconify-icon class="text-xl" icon="mdi:food-variant"></iconify-icon><span class="text-sm font-medium">菜品管理</span></a>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="canteen-stock.html"><iconify-icon class="text-xl" icon="mdi:box-variant"></iconify-icon><span class="text-sm font-medium">食材库存</span></a>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="canteen-verify.html"><iconify-icon class="text-xl" icon="mdi:barcode-scan"></iconify-icon><span class="text-sm font-medium">取餐核销</span></a>
+<a class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl transition-all" href="canteen-purchase.html"><iconify-icon class="text-xl" icon="mdi:cart-arrow-down"></iconify-icon><span class="text-sm font-medium">采购审批</span></a>
+<a class="flex items-center gap-3 px-4 py-3 bg-blue-600 text-white rounded-xl transition-all" href="canteen-staff-v2.html"><iconify-icon class="text-xl" icon="mdi:account-group"></iconify-icon><span class="text-sm font-medium">员工管理</span></a>
+</nav>
+<div class="p-4 border-t border-slate-800 text-xs text-slate-500 text-center" id="sidebarFooter">v3.5.0</div>
+</aside>
+<main class="flex-1 flex flex-col min-w-0">
+<header class="h-16 bg-white border-b border-slate-200 px-8 flex items-center justify-between">
+<h2 class="text-lg font-bold" id="pageTitle">员工管理</h2>
+<div class="flex gap-3">
+<button id="btnOnboard" class="px-4 py-2 bg-blue-600 text-white rounded-xl text-sm font-bold flex items-center gap-2 shadow-lg shadow-blue-100" onclick="openOnboard()"><iconify-icon icon="mdi:plus"></iconify-icon>入职办理</button>
+</div>
+</header>
+<div class="flex-1 overflow-y-auto p-8 space-y-6">
+<div class="bg-white rounded-3xl border border-slate-200 shadow-sm">
+<div class="p-6 border-b border-slate-100"><h3 class="font-bold" id="listTitle">员工列表</h3></div>
+<table class="w-full text-left"><thead class="bg-slate-50 border-b border-slate-100 text-xs text-slate-400 font-bold uppercase tracking-widest">
+<tr><th class="px-6 py-4">工号</th><th class="px-6 py-4">姓名</th><th class="px-6 py-4">岗位</th><th class="px-6 py-4">健康证</th><th class="px-6 py-4">电话</th><th class="px-6 py-4">入职日期</th><th class="px-6 py-4">状态</th><th class="px-6 py-4 text-center">操作</th></tr>
+</thead><tbody class="divide-y divide-slate-50 text-sm" id="staffBody"><tr><td colspan="8" class="px-6 py-8 text-center text-slate-400">加载中...</td></tr></tbody></table>
+</div>
+</div>
+</main>
+
+<!-- 入职/编辑弹窗 -->
+<div class="modal-overlay hidden" id="empModal"><div class="modal-box"><h3 id="empModalTitle">编辑员工</h3>
+<input type="hidden" id="empId">
+<div class="frow"><div><label>工号</label><input id="empNo"></div><div><label>姓名 *</label><input id="empName"></div></div>
+<div class="frow"><div><label>岗位</label><input id="empPosition"></div><div><label>所属食堂ID</label><input id="empCanteenId" type="number"></div></div>
+<div class="frow"><div><label>电话</label><input id="empPhone"></div><div><label>入职日期</label><input id="empHireDate" type="date"></div></div>
+<div class="frow"><div><label>健康证到期</label><input id="empHealthCert" type="date"></div><div><label>状态</label><select id="empStatus"><option value="ACTIVE">在职</option><option value="INACTIVE">离职</option></select></div></div>
+<div class="btn-row"><button class="btn-cancel" onclick="closeModal('empModal')">取消</button><button class="btn-save" onclick="doSave()">保存</button></div>
+</div></div>
+
+<!-- 关键：同步加载员工数据 -->
+<script src="/api/employees/js"></script>
+
+<script>
+// EMP_DATA 由 /api/employees/js 同步提供，页面加载时已就绪
+(function(){
+  var list=typeof EMP_DATA!=='undefined'?EMP_DATA:[];
+  var tb=document.getElementById('staffBody');
+  var title=document.getElementById('listTitle');
+  if(title)title.textContent='员工列表 ('+list.length+'人)';
+
+  if(!tb)return;
+  if(!list.length){tb.innerHTML='<tr><td colspan="8" class="px-6 py-8 text-center text-slate-400">暂无员工数据</td></tr>';}
+  else {
+    var html='';
+    for(var i=0;i<list.length;i++){
+      var e=list[i];
+      var st=e.status==='ACTIVE'?'<span class="bg-emerald-50 text-emerald-600 px-2 py-1 rounded text-xs font-bold">在职</span>':'<span class="bg-slate-100 text-slate-500 px-2 py-1 rounded text-xs font-bold">离职</span>';
+      html+='<tr class="hover:bg-slate-50"><td class="px-6 py-4 font-bold">'+(e.empNo||'')+'</td><td class="px-6 py-4">'+(e.name||'')+'</td><td class="px-6 py-4">'+(e.position||'')+'</td><td class="px-6 py-4 text-xs">'+(e.healthCertExpiry||'')+'</td><td class="px-6 py-4">'+(e.phone||'')+'</td><td class="px-6 py-4 text-xs">'+(e.hireDate||'')+'</td><td class="px-6 py-4">'+st+'</td><td class="px-6 py-4"><div class="flex justify-center gap-2"><button class="p-2 text-slate-400 hover:text-blue-600" onclick="editEmp('+e.id+')"><iconify-icon icon="mdi:pencil-outline"></iconify-icon></button><button class="p-2 text-slate-400 hover:text-red-600" onclick="deleteEmp('+e.id+')"><iconify-icon icon="mdi:trash-can-outline"></iconify-icon></button></div></td></tr>';
+    }
+    tb.innerHTML=html;
+  }
+
+  // 角色权限
+  var user=JSON.parse(sessionStorage.getItem('user')||'null');
+  var role=user?user.role:'';
+  var sidetitle=document.getElementById('sidebarTitle');
+  if(role==='SUPERVISOR'){
+    if(sidetitle)sidetitle.textContent='后勤处 · 监管端';
+    var btn=document.getElementById('btnOnboard');
+    if(btn)btn.parentElement.innerHTML='<span class="text-sm text-slate-400">📋 监管查看模式</span>';
+  }else if(role==='CANTEEN_MANAGER'){
+    if(sidetitle)sidetitle.textContent='第一食堂 · 管理端';
+  }else if(role==='SUPER_ADMIN'){
+    if(sidetitle)sidetitle.textContent='超级管理 · 系统端';
+  }
+})();
+
+// ===== 入职办理 =====
+function openOnboard(){
+  document.getElementById('empId').value='';
+  document.getElementById('empNo').value='EMP-'+new Date().getFullYear()+'-'+String(Math.floor(Math.random()*900+100)).padStart(3,'0');
+  document.getElementById('empName').value='';
+  document.getElementById('empPosition').value='';
+  document.getElementById('empCanteenId').value='';
+  document.getElementById('empPhone').value='';
+  document.getElementById('empHireDate').value=new Date().toISOString().slice(0,10);
+  document.getElementById('empHealthCert').value='';
+  document.getElementById('empStatus').value='ACTIVE';
+  document.getElementById('empModalTitle').textContent='入职办理';
+  document.getElementById('empModal').classList.remove('hidden');
+}
+
+// ===== 编辑员工 =====
+function editEmp(id){
+  var list=typeof EMP_DATA!=='undefined'?EMP_DATA:[];
+  var e=null;
+  for(var i=0;i<list.length;i++){if(list[i].id===id){e=list[i];break;}}
+  if(!e){alert('员工不存在');return;}
+  document.getElementById('empId').value=e.id||'';
+  document.getElementById('empNo').value=e.empNo||'';
+  document.getElementById('empName').value=e.name||'';
+  document.getElementById('empPosition').value=e.position||'';
+  document.getElementById('empCanteenId').value=e.canteenId||'';
+  document.getElementById('empPhone').value=e.phone||'';
+  document.getElementById('empHireDate').value=e.hireDate||'';
+  document.getElementById('empHealthCert').value=e.healthCertExpiry||'';
+  document.getElementById('empStatus').value=e.status||'ACTIVE';
+  document.getElementById('empModalTitle').textContent='编辑 - '+(e.name||'');
+  document.getElementById('empModal').classList.remove('hidden');
+}
+
+// ===== 保存（入职/编辑） =====
+function doSave(){
+  var id=document.getElementById('empId').value;
+  var data={
+    empNo:document.getElementById('empNo').value,
+    name:document.getElementById('empName').value,
+    position:document.getElementById('empPosition').value,
+    canteenId:parseInt(document.getElementById('empCanteenId').value)||null,
+    phone:document.getElementById('empPhone').value,
+    hireDate:document.getElementById('empHireDate').value,
+    healthCertExpiry:document.getElementById('empHealthCert').value,
+    status:document.getElementById('empStatus').value
+  };
+  if(!data.name){alert('请输入姓名');return;}
+  var h={'Content-Type':'application/json'};
+  var token=sessionStorage.getItem('token');
+  if(token)h['Authorization']='Bearer '+token;
+  var isNew=!id;
+  fetch('http://localhost:8080/api/employees'+(isNew?'':'/'+id),{
+    method:isNew?'POST':'PUT',headers:h,body:JSON.stringify(data)
+  })
+  .then(function(r){return r.json();})
+  .then(function(r){
+    if(r.code===200){alert(isNew?'入职办理成功':'更新成功');location.reload();}
+    else alert(r.message||'操作失败');
+  }).catch(function(){alert('网络错误');});
+}
+
+// ===== 删除 =====
+function deleteEmp(id){
+  if(!confirm('确定删除此员工？'))return;
+  var h={'Content-Type':'application/json'};
+  var token=sessionStorage.getItem('token');
+  if(token)h['Authorization']='Bearer '+token;
+  fetch('http://localhost:8080/api/employees/'+id,{method:'DELETE',headers:h})
+  .then(function(r){return r.json();})
+  .then(function(r){
+    if(r.code===200){alert('已删除');location.reload();}
+    else alert(r.message||'删除失败');
+  }).catch(function(){alert('网络错误');});
+}
+
+function closeModal(id){document.getElementById(id).classList.add('hidden');}
+</script>
+</body>
+</html>

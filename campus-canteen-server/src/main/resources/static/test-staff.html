@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"/><title>员工测试</title></head>
+<body>
+<h2 id="title">加载中...</h2>
+<table border="1"><thead><tr><th>ID</th><th>工号</th><th>姓名</th><th>岗位</th><th>状态</th><th>操作</th></tr></thead><tbody id="tb"></tbody></table>
+<br>
+<h3>入职办理</h3>
+<input id="nName" placeholder="姓名"><input id="nPos" placeholder="岗位"><input id="nEmpNo" placeholder="工号">
+<button onclick="doAdd()">提交入职</button>
+<div id="result"></div>
+<script>
+var API='http://localhost:8080/api';
+var token=sessionStorage.getItem('token')||'';
+var h={'Content-Type':'application/json'};
+if(token)h['Authorization']='Bearer '+token;
+
+// 加载列表
+function load(){
+  var tb=document.getElementById('tb');
+  document.getElementById('title').textContent='正在请求API...';
+  fetch(API+'/employees?page=1&size=50',{headers:h})
+  .then(function(r){return r.json();})
+  .then(function(r){
+    document.getElementById('title').textContent='API返回 code='+r.code+' data类型='+(typeof r.data);
+    if(r.code!==200||!r.data){tb.innerHTML='<tr><td colspan="6">加载失败</td></tr>';return;}
+    var list=r.data.list||r.data.content||r.data.records||[];
+    if(!Array.isArray(list))list=[];
+    document.getElementById('title').textContent='员工 '+list.length+' 人';
+    var html='';
+    for(var i=0;i<list.length;i++){
+      var e=list[i];
+      html+='<tr><td>'+e.id+'</td><td>'+e.empNo+'</td><td>'+e.name+'</td><td>'+e.position+'</td><td>'+e.status+'</td><td><button onclick="doDel('+e.id+')">删除</button></td></tr>';
+    }
+    tb.innerHTML=html||'<tr><td colspan="6">无数据</td></tr>';
+  }).catch(function(e){
+    document.getElementById('title').textContent='网络错误: '+e.message;
+  });
+}
+
+// 入职
+function doAdd(){
+  var data={
+    name:document.getElementById('nName').value,
+    position:document.getElementById('nPos').value,
+    empNo:document.getElementById('nEmpNo').value||('EMP-'+new Date().getFullYear()+'-'+Math.floor(Math.random()*900+100)),
+    status:'ACTIVE'
+  };
+  if(!data.name){alert('请输入姓名');return;}
+  document.getElementById('result').textContent='提交中...';
+  fetch(API+'/employees',{method:'POST',headers:h,body:JSON.stringify(data)})
+  .then(function(r){return r.json();})
+  .then(function(r){
+    document.getElementById('result').textContent=r.code===200?'入职成功 ID='+r.data.id:'失败: '+(r.message||'');
+    if(r.code===200)load();
+  }).catch(function(e){
+    document.getElementById('result').textContent='网络错误: '+e.message;
+  });
+}
+
+// 删除
+function doDel(id){
+  if(!confirm('删除 #'+id+' ?'))return;
+  fetch(API+'/employees/'+id,{method:'DELETE',headers:h})
+  .then(function(r){return r.json();})
+  .then(function(r){
+    if(r.code===200){alert('已删除');load();}
+    else alert(r.message||'删除失败');
+  });
+}
+
+load();
+</script>
+</body>
+</html>
